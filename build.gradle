@@ -1,0 +1,54 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.5.7'
+	id 'io.spring.dependency-management' version '1.1.7'
+    id "org.openapi.generator" version "7.17.0"
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+description = 'バックエンド用'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'io.swagger.core.v3:swagger-annotations:2.2.8'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+task buildSampleBack(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask) {
+    generatorName.set("html2")
+    inputSpec.set("$rootDir/src/main/resources/api-schema.yaml")
+    outputDir.set("$buildDir/apidoc")
+}
+
+task buildSpringServer(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask) {
+    generatorName.set("spring")
+    inputSpec.set("$rootDir/src/main/resources/api-schema.yaml")
+    outputDir.set("$buildDir/spring")
+    apiPackage.set("com.example.sampleback.controller")
+    modelPackage.set("com.example.sampleback.model")
+    configOptions.set([
+            interfaceOnly: "true",
+            useSpringBoot3: "true"
+    ])
+}
+
+compileJava.dependsOn tasks.buildSpringServer
+sourceSets.main.java.srcDir "$buildDir/spring/src/main/java"

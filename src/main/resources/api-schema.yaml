@@ -1,0 +1,11 @@
+openapi: "3.0.0"
+info:
+  title: "sample_back Document"
+  version: "0.0.1"
+  description: "sample_backのドキュメント"
+paths:
+  /sample:
+    get:
+      responses:
+        200:
+          description: "OK"
