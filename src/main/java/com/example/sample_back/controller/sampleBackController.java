@@ -9,6 +9,8 @@ public class sampleBackController implements SampleApi {
 
     @Override
     public ResponseEntity<Void> sampleGet() {
+        System.out.println("sample");
         return ResponseEntity.ok().build();
     }
+
 }
