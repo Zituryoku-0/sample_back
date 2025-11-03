@@ -1,15 +1,14 @@
 -- DB作成
-CREATE DATABASE sample_db;
+CREATE DATABASE mydatabase;
 -- 作成したDBに接続
-\c sample_db;
+\c mydatabase;
 -- テーブル作成
 DROP TABLE IF EXISTS sample;
 CREATE TABLE sample (
-	id integer NOT NULL PRIMARY KEY,
-	name char(100) NOT NULL,
-	created_date_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+	id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+	userId char(32) NOT NULL,
+	userName char(64) NOT NULL,
+	latest_access_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
--- ID用シーケンス作成
-CREATE SEQUENCE sample_id_seq START 1;
 -- サンブルデータの登録
-INSERT INTO sample (id, name) VALUES(nextval('sample_id_seq'), 'sample name');
+INSERT INTO sample (userId, userName) VALUES('sampleUserId1', 'sample UserName1');
