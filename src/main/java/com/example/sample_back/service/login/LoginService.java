@@ -12,6 +12,6 @@ public class LoginService {
 
     public UserEntity find() {
         var record = repository.select();
-        return new UserEntity(record.getUserId(), record.getUserName());
+        return new UserEntity(record.getUserId().trim(), record.getUserName().trim(), record.getUserPassword().trim());
     }
 }

@@ -16,6 +16,6 @@ public class LoginController {
     @GetMapping
     public UserDTO checkUser(){
         var entity = service.find();
-        return new UserDTO(entity.getUserId(), entity.getUserName() );
+        return new UserDTO(entity.getUserId(), entity.getUserName(), entity.getUserPassword());
     }
 }

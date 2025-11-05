@@ -1,11 +1,11 @@
 package com.example.sample_back.repository.login;
 
-import org.springframework.stereotype.Repository;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
-@Repository
-public class UserRepository {
+@Mapper
+public interface UserRepository {
 
-    public UserRecord select(){
-        return new UserRecord("sampleRepositoryUserId2", "sampleRepositoryUserName2");
-    }
+    @Select("SELECT userid, username, userpassword FROM userinfo")
+    UserRecord select();
 }
