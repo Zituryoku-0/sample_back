@@ -6,4 +6,5 @@ import lombok.Value;
 public class UserEntity {
     String userId;
     String userName;
+    String userPassword;
 }
