@@ -38,7 +38,7 @@ psql -U postgres -d mydatabase
 
 ## 3.sample_backリポジトリを起動する
 
-[sample_back](https://github.com/Zituryoku-0/sample_back/blob/main/src/main/java/com/example/sample_back/SampleBackApplication.java)のアプリケーションを起動してください。
+sample_backのアプリケーションを起動するには、以下のコマンドを実行してください（プロジェクトルートで実行）。
 
 ## 4.sample_frontの起動に必要なライブラリをインストールする
 
