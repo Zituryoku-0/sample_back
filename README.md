@@ -27,7 +27,7 @@ Docker Desktopを起動しておけばOKです。
 docker compose up -d
 ```
 
-もし、起動したコンテナおよび[01_init.sql](https://github.com/Zituryoku-0/sample_back/blob/main/postgres/init/01_init.sql)によって作成されたDBを確認したい場合は、以下のコマンドも実行してください。
+もし、起動したコンテナおよび[01_init.sql](postgres/init/01_init.sql)によって作成されたDBを確認したい場合は、以下のコマンドも実行してください。
 ```
 docker exec -it mycontainer bash
 ```
