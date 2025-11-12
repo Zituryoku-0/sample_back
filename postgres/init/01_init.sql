@@ -11,5 +11,5 @@ CREATE TABLE userInfo (
 	password char(64) NOT NULL,
 	latest_access_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
--- サンブルデータの登録
+-- サンプルデータの登録
 INSERT INTO userInfo (userId, userName, password) VALUES('sampleUserId1', 'sample UserName1', 'abcdef');
