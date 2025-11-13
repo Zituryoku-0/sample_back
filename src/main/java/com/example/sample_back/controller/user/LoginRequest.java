@@ -3,8 +3,7 @@ package com.example.sample_back.controller.user;
 import lombok.Value;
 
 @Value
-public class UserDTO {
+public class LoginRequest {
     String userId;
-    String userName;
-    Boolean loginCheck;
+    String password;
 }

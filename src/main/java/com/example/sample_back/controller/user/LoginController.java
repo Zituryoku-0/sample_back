@@ -1,8 +1,12 @@
 package com.example.sample_back.controller.user;
 
 import com.example.sample_back.service.login.LoginService;
+import com.example.sample_back.service.login.UserEntity;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,9 +17,20 @@ public class LoginController {
 
     private final LoginService service;
 
-    @GetMapping
-    public UserDTO checkUser(){
-        var entity = service.find();
-        return new UserDTO(entity.getUserId(), entity.getUserName(), entity.getUserPassword());
+    @PostMapping(consumes = "application/json", produces = "application/json")
+    public ResponseEntity<?> checkUser(@RequestBody LoginRequest request) {
+        try {
+            UserEntity entity = service.find(request);
+            UserDTO dto = new UserDTO(entity.getUserId(), entity.getUserName(), entity.getLoginCheck());
+            return ResponseEntity.ok(dto);
+        } catch (IllegalArgumentException illegalArgumentException) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(illegalArgumentException.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(e.getMessage());
+        }
     }
 }

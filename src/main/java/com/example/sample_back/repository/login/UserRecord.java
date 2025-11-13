@@ -7,5 +7,4 @@ import lombok.Value;
 public class UserRecord {
     String userId;
     String userName;
-    String userPassword;
 }
