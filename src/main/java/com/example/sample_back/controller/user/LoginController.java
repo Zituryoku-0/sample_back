@@ -21,10 +21,11 @@ public class LoginController {
     public ResponseEntity<?> checkUser(@RequestBody LoginRequest request) {
         try {
             UserEntity entity = service.find(request);
-            return ResponseEntity.ok(entity);
+            UserDTO dto = new UserDTO(entity.getUserId(), entity.getUserName(), entity.getLoginCheck());
+            return ResponseEntity.ok(dto);
         } catch (IllegalArgumentException illegalArgumentException) {
             return ResponseEntity
-                    .status(HttpStatus.CONFLICT)
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(illegalArgumentException.getMessage());
         } catch (Exception e) {
             return ResponseEntity
