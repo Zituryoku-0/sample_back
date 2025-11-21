@@ -9,3 +9,68 @@ paths:
       responses:
         200:
           description: "OK"
+  /login:
+    get:
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successLogin'
+          description: "Successfully"
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/failureLogin'
+          description: "Client Error"
+        500:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/failureLogin'
+          description: "Internal Server Error"
+components:
+  schemas:
+    successLogin:
+      x-swagger-router-model: io.swagger.petstore.model.Pet
+      required:
+        - id
+      type: object
+      properties:
+        userId:
+          type: string
+          example: sampleUserId1
+        userName:
+          type: string
+          example: sample UserName1
+        loginCheck:
+          type: boolean
+          example: true
+        tags:
+          type: array
+          xml:
+            wrapped: true
+      xml:
+        name: pet
+    failureLogin:
+      x-swagger-router-model: io.swagger.petstore.model.Pet
+      required:
+        - id
+      type: object
+      properties:
+        userId:
+          type: string
+          example:
+        userName:
+          type: string
+          example:
+        loginCheck:
+          type: boolean
+          example: false
+        tags:
+          type: array
+          xml:
+            wrapped: true
+      xml:
+        name: pet
