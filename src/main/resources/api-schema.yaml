@@ -4,11 +4,14 @@ info:
   version: "0.0.1"
   description: "sample_backのドキュメント"
 paths:
+  # sampleパス
   /sample:
     get:
       responses:
         200:
           description: "OK"
+
+  # loginパス
   /login:
     get:
       responses:
@@ -30,8 +33,35 @@ paths:
               schema:
                 $ref: '#/components/schemas/failureLogin'
           description: "Internal Server Error"
+
+  # shopパス
+  /shop:
+    get:
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successShop'
+          description: "Successfully"
+        #ユーザー入力ミス
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/failureShop'
+          description: "Client Error"
+        # 在庫切れ
+        500:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/failureShop'
+          description: "Internal Server Error"
+
 components:
   schemas:
+    # ログイン成功
     successLogin:
       x-swagger-router-model: io.swagger.petstore.model.Pet
       required:
@@ -53,6 +83,7 @@ components:
             wrapped: true
       xml:
         name: pet
+    # ログイン失敗
     failureLogin:
       x-swagger-router-model: io.swagger.petstore.model.Pet
       required:
@@ -74,3 +105,50 @@ components:
             wrapped: true
       xml:
         name: pet
+
+    # shopパス結果：成功
+    successShop:
+      x-swagger-router-model: io.swagger.petstore.model.Pet
+      required:
+        - shopId
+      type: object
+      properties:
+        shopId:
+          type: string
+          example: s001
+        shopName:
+          type: string
+          example: ティッシュ（5箱）
+        shopPrice:
+          type: string
+          example: 500
+        shopStock:
+          type: string
+          example: 100
+        stockCheck:
+          type: boolean
+          example: true
+      xml:
+        name: shop
+
+    # shopパス結果：失敗
+    failureShop:
+      x-swagger-router-model: io.swagger.petstore.model.Pet
+      required:
+        - shopId
+      type: object
+      properties:
+        shopId:
+          type: string
+          example:
+        shopName:
+          type: string
+          example:
+        shopPrice:
+          type: string
+          example:
+        stockCheck:
+          type: boolean
+          example: false
+      xml:
+        name: shop
