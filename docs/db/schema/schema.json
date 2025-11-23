@@ -1,0 +1,128 @@
+{
+  "name": "mydatabase",
+  "tables": [
+    {
+      "name": "public.userinfo",
+      "type": "BASE TABLE",
+      "comment": "会員登録したユーザーの基本情報を管理するテーブル。\n",
+      "columns": [
+        {
+          "name": "id",
+          "type": "bigint",
+          "nullable": false
+        },
+        {
+          "name": "userid",
+          "type": "character(32)",
+          "nullable": false,
+          "comment": "ユーザーID\n"
+        },
+        {
+          "name": "username",
+          "type": "character(64)",
+          "nullable": false,
+          "comment": "ユーザー名\n"
+        },
+        {
+          "name": "userpassword",
+          "type": "character(64)",
+          "nullable": false,
+          "comment": "パスワード\n"
+        },
+        {
+          "name": "latest_access_time",
+          "type": "timestamp without time zone",
+          "nullable": false,
+          "default": "CURRENT_TIMESTAMP",
+          "comment": "最終更新日時\n"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "userinfo_pkey",
+          "def": "CREATE UNIQUE INDEX userinfo_pkey ON public.userinfo USING btree (id)",
+          "table": "public.userinfo",
+          "columns": [
+            "id"
+          ]
+        }
+      ],
+      "constraints": [
+        {
+          "name": "userinfo_id_not_null",
+          "type": "n",
+          "def": "NOT NULL id",
+          "table": "public.userinfo",
+          "referenced_table": "",
+          "columns": [
+            "id"
+          ]
+        },
+        {
+          "name": "userinfo_latest_access_time_not_null",
+          "type": "n",
+          "def": "NOT NULL latest_access_time",
+          "table": "public.userinfo",
+          "referenced_table": "",
+          "columns": [
+            "latest_access_time"
+          ]
+        },
+        {
+          "name": "userinfo_userid_not_null",
+          "type": "n",
+          "def": "NOT NULL userid",
+          "table": "public.userinfo",
+          "referenced_table": "",
+          "columns": [
+            "userid"
+          ]
+        },
+        {
+          "name": "userinfo_username_not_null",
+          "type": "n",
+          "def": "NOT NULL username",
+          "table": "public.userinfo",
+          "referenced_table": "",
+          "columns": [
+            "username"
+          ]
+        },
+        {
+          "name": "userinfo_userpassword_not_null",
+          "type": "n",
+          "def": "NOT NULL userpassword",
+          "table": "public.userinfo",
+          "referenced_table": "",
+          "columns": [
+            "userpassword"
+          ]
+        },
+        {
+          "name": "userinfo_pkey",
+          "type": "PRIMARY KEY",
+          "def": "PRIMARY KEY (id)",
+          "table": "public.userinfo",
+          "referenced_table": "",
+          "columns": [
+            "id"
+          ]
+        }
+      ]
+    }
+  ],
+  "driver": {
+    "name": "postgres",
+    "database_version": "PostgreSQL 18.0 (Debian 18.0-1.pgdg13+3) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+    "meta": {
+      "current_schema": "public",
+      "search_paths": [
+        "postgres",
+        "public"
+      ],
+      "dict": {
+        "Functions": "Stored procedures and functions"
+      }
+    }
+  }
+}

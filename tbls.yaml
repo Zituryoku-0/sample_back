@@ -1,0 +1,22 @@
+# DSN (Database Source Name) to connect database
+dsn: postgresql://postgres:postgres@localhost:5432/mydatabase?sslmode=disable
+
+# Path to generate document
+# Default is `dbdoc`
+docPath: docs/db/schema
+
+# Comments設定 - ドキュメント再生成時に保持される独自のコメント
+comments:
+  -
+    table: userinfo
+    tableComment: |
+      会員登録したユーザーの基本情報を管理するテーブル。
+    columnComments:
+      userid: |
+        ユーザーID
+      username: |
+        ユーザー名
+      userpassword: |
+        パスワード
+      latest_access_time: |
+       最終更新日時
