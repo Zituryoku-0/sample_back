@@ -4,7 +4,7 @@
 
 | Name | Columns | Comment | Type |
 | ---- | ------- | ------- | ---- |
-| [public.userinfo](public.userinfo.md) | 5 | 会員登録したユーザーの基本情報を管理するテーブル。<br /> | BASE TABLE |
+| [public.userinfo](public.userinfo.md) | 5 | <br>会員登録したユーザーの基本情報を管理するテーブル。<br> | BASE TABLE |
 
 ## Relations
 

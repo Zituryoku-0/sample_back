@@ -4,13 +4,47 @@ info:
   version: "0.0.1"
   description: "sample_backのドキュメント"
 paths:
-  /sample:
-    get:
+  /login:
+    post:
+      description:
+        ログイン時に起動するエンドポイント
+      requestBody:
+        description: リクエストJSON
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/requestLogin'
       responses:
         200:
-          description: "OK"
-  /login:
-    get:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successLogin'
+          description: "Successfully"
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/failureLogin'
+          description: "Client Error"
+        500:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/failureLogin'
+          description: "Internal Server Error"
+  /registUser:
+    post:
+      description: |
+        ユーザー登録時に起動するエンドポイント
+        
+        ユーザー登録に成功時はそのままログインするため、成功時のJSONは/loginと同じ
+      requestBody:
+        description: リクエストJSON
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/registUser'
       responses:
         200:
           content:
@@ -32,10 +66,23 @@ paths:
           description: "Internal Server Error"
 components:
   schemas:
-    successLogin:
-      x-swagger-router-model: io.swagger.petstore.model.Pet
+    requestLogin:
       required:
-        - id
+        - userId
+        - password
+      type: object
+      properties:
+        userId:
+          type: string
+          example: sampleUserId1
+        password:
+          type: string
+          example: abcdef
+    successLogin:
+      required:
+        - userId
+        - userName
+        - loginCheck
       type: object
       properties:
         userId:
@@ -47,16 +94,11 @@ components:
         loginCheck:
           type: boolean
           example: true
-        tags:
-          type: array
-          xml:
-            wrapped: true
-      xml:
-        name: pet
     failureLogin:
-      x-swagger-router-model: io.swagger.petstore.model.Pet
       required:
-        - id
+        - userId
+        - userName
+        - loginCheck
       type: object
       properties:
         userId:
@@ -68,9 +110,19 @@ components:
         loginCheck:
           type: boolean
           example: false
-        tags:
-          type: array
-          xml:
-            wrapped: true
-      xml:
-        name: pet
+    registUser:
+      required:
+        - userId
+        - userName
+        - password
+      type: object
+      properties:
+        userId:
+          type: string
+          example: sampleUserId1
+        userName:
+          type: string
+          example: sample UserName1
+        password:
+          type: string
+          example: abcdef

@@ -2,6 +2,7 @@
 
 ## Description
 
+  
 会員登録したユーザーの基本情報を管理するテーブル。  
 
 
@@ -10,10 +11,10 @@
 | Name | Type | Default | Nullable | Children | Parents | Comment |
 | ---- | ---- | ------- | -------- | -------- | ------- | ------- |
 | id | bigint |  | false |  |  |  |
-| userid | character(32) |  | false |  |  | ユーザーID<br /> |
-| username | character(64) |  | false |  |  | ユーザー名<br /> |
-| userpassword | character(64) |  | false |  |  | パスワード<br /> |
-| latest_access_time | timestamp without time zone | CURRENT_TIMESTAMP | false |  |  | 最終更新日時<br /> |
+| userid | character(32) |  | false |  |  | <br>ユーザーID<br> |
+| username | character(64) |  | false |  |  | <br>ユーザー名<br> |
+| userpassword | character(64) |  | false |  |  | <br>パスワード<br> |
+| latest_access_time | timestamp without time zone | CURRENT_TIMESTAMP | false |  |  | <br>最終更新日時<br> |
 
 ## Constraints
 
