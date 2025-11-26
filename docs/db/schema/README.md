@@ -4,7 +4,10 @@
 
 | Name | Columns | Comment | Type |
 | ---- | ------- | ------- | ---- |
-| [public.userinfo](public.userinfo.md) | 5 | 会員登録したユーザーの基本情報を管理するテーブル。<br /> | BASE TABLE |
+| [public.userinfo](public.userinfo.md) | 5 | 会員登録したユーザーの基本情報を管理するテーブル。<br> | BASE TABLE |
+| [public.iteminfo](public.iteminfo.md) | 3 | 商品の情報を管理するテーブル。<br> | BASE TABLE |
+| [public.shopinfo](public.shopinfo.md) | 3 | お店の情報を管理するテーブル。<br> | BASE TABLE |
+| [public.stockinfo](public.stockinfo.md) | 3 | 商品の在庫情報を管理するテーブル。<br> | BASE TABLE |
 
 ## Relations
 

@@ -4,11 +4,14 @@ info:
   version: "0.0.1"
   description: "sample_backのドキュメント"
 paths:
+  # sampleパス
   /sample:
     get:
       responses:
         200:
           description: "OK"
+
+  # loginパス
   /login:
     get:
       responses:
@@ -30,10 +33,108 @@ paths:
               schema:
                 $ref: '#/components/schemas/failureLogin'
           description: "Internal Server Error"
+
+  # itemパス
+  /item:
+    get:
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successItem'
+          description: "Successfully"
+        #ユーザー入力ミス
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/failureItem'
+          description: "Client Error"
+        # 在庫切れ
+        500:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/failureItem'
+          description: "Internal Server Error"
+  # お店パス
+  /shop:
+    get:
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successShop'
+          description: "Successfully"
+        #
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/failureShop'
+          description: "Client Error"
+        #
+        500:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/failureShop'
+          description: "Internal Server Error"
+  # 在庫数パス
+  /stock:
+    get:
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successStock'
+          description: "Successfully"
+        #
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/failureStock'
+          description: "Client Error"
+        #
+        500:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/failureStock'
+          description: "Internal Server Error"
+  # 一覧取得に成功
+  /getItemList:
+    get:
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getItemList'
+          description: "Successfully"
+        #ユーザーミス
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/failureItemList'
+          description: "Client Error"
+        #
+        500:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/failureItemList'
+          description: "Internal Server Error"
+
 components:
   schemas:
+    # ログイン成功
     successLogin:
-      x-swagger-router-model: io.swagger.petstore.model.Pet
       required:
         - id
       type: object
@@ -52,9 +153,9 @@ components:
           xml:
             wrapped: true
       xml:
-        name: pet
+        name: login
+    # ログイン失敗
     failureLogin:
-      x-swagger-router-model: io.swagger.petstore.model.Pet
       required:
         - id
       type: object
@@ -73,4 +174,175 @@ components:
           xml:
             wrapped: true
       xml:
-        name: pet
+        name: login
+
+    # 商品パス結果：成功
+    successItem:
+      required:
+        - itemId
+      type: object
+      properties:
+        itemId:
+          type: string
+          example: itemId1
+        itemName:
+          type: string
+          example: ティッシュ（5箱）
+        itemPrice:
+          type: string
+          example: 500
+        stock:
+          type: string
+          example: 100
+      xml:
+        name: item
+
+    # 商品パス結果：失敗
+    failureItem:
+      required:
+        - itemId
+      type: object
+      properties:
+        itemId:
+          type: string
+          example:
+        itemName:
+          type: string
+          example:
+        itemPrice:
+          type: string
+          example:
+        stock:
+          type: string
+          example:
+      xml:
+        name: item
+
+    # お店パス結果：成功
+    successShop:
+      required:
+        - shopId
+      type: object
+      properties:
+        shopId:
+          type: string
+          example: shopId1
+        shopName:
+          type: string
+          example: 丸スーパー
+        shopAddress:
+          type: string
+          example: 〇県
+      xml:
+        name: shop
+
+    # お店パス結果：成功
+    failureShop:
+      required:
+        - shopId
+      type: object
+      properties:
+        shopId:
+          type: string
+          example:
+        shopName:
+          type: string
+          example:
+        shopAddress:
+          type: string
+          example:
+      xml:
+        name: shop
+
+    # お店パス結果：成功
+    successStock:
+      required:
+        - shopId
+        - itemId
+      type: object
+      properties:
+        shopId:
+          type: string
+          example: shopId1
+        itemId:
+          type: string
+          example: itemId1
+        stock:
+          type: string
+          example: 100
+      xml:
+        name: shop
+    # お店パス結果：成功
+    failureStock:
+      required:
+        - shopId
+        - itemId
+      type: object
+      properties:
+        shopId:
+          type: string
+          example:
+        itemId:
+          type: string
+          example:
+        stock:
+          type: string
+          example:
+      xml:
+        name: shop
+
+    # 商品一覧取得
+    getItemList:
+      required:
+        - itemId
+        - shopId
+      type: object
+      properties:
+        itemId:
+          type: string
+          example: item001
+        itemName:
+          type: string
+          example: ティッシュ（5箱）
+        itemPrice:
+          type: string
+          example: 500
+        shopId:
+          type: string
+          example: shopId1
+        shopName:
+          type: string
+          example: 丸スーパー
+        stock:
+          type: string
+          example: 100
+          xml:
+            name: getItemList
+
+      # 商品一覧取得失敗
+    failureItemList:
+        required:
+          - itemId
+          - shopId
+        type: object
+        properties:
+          itemId:
+            type: string
+            example:
+          itemName:
+            type: string
+            example:
+          itemPrice:
+            type: string
+            example:
+          shopId:
+            type: string
+            example:
+          shopName:
+            type: string
+            example:
+          stock:
+            type: string
+            example:
+            xml:
+              name: failureItemList

@@ -20,3 +20,38 @@ comments:
         パスワード
       latest_access_time: |
        最終更新日時
+  -
+    table: iteminfo
+    tableComment: |
+      商品の情報を管理するテーブル。
+    columnComments:
+      itemid: |
+        商品ID
+      itemname: |
+        商品名
+      itemprice: |
+        価格
+
+  -
+    table: shopinfo
+    tableComment: |
+      お店の情報を管理するテーブル。
+    columnComments:
+      shopid: |
+        お店ID
+      shopname: |
+        お店名
+      shopaddress: |
+        お店住所
+
+  -
+    table: stockinfo
+    tableComment: |
+      商品の在庫情報を管理するテーブル。
+    columnComments:
+      shopid: |
+        お店ID
+      itemid: |
+        商品ID
+      stock: |
+        在庫数
