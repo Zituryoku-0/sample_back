@@ -123,6 +123,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/failureItemList'
           description: "Client Error"
+        #
+        500:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/failureItemList'
+          description: "Internal Server Error"
 
 components:
   schemas:
@@ -274,13 +281,13 @@ components:
       properties:
         shopId:
           type: string
-          example: shopId1
+          example:
         itemId:
           type: string
-          example: itemId1
+          example:
         stock:
           type: string
-          example: 100
+          example:
       xml:
         name: shop
 
