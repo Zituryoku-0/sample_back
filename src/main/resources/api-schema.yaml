@@ -4,16 +4,21 @@ info:
   version: "0.0.1"
   description: "sample_backのドキュメント"
 paths:
-  # sampleパス
-  /sample:
-    get:
-      responses:
-        200:
-          description: "OK"
-
   # loginパス
   /login:
-    get:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                  example: sampleUserId1
+                password:
+                  type: string
+                  example: samplePassword1
       responses:
         200:
           content:
@@ -149,7 +154,6 @@ components:
           type: boolean
           example: true
         tags:
-          type: array
           xml:
             wrapped: true
       xml:
@@ -169,10 +173,9 @@ components:
         loginCheck:
           type: boolean
           example: false
-        tags:
-          type: array
-          xml:
-            wrapped: true
+        message:
+          type: string
+          example: "ユーザーIDまたはパスワードが違います。"
       xml:
         name: login
 
