@@ -2,7 +2,6 @@ package com.example.sample_back.service.login;
 
 import com.example.sample_back.repository.login.UserRecord;
 import com.example.sample_back.repository.login.UserRepository;
-import com.example.sampleback.model.LoginPostRequest;
 import com.example.sampleback.model.RequestLogin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
