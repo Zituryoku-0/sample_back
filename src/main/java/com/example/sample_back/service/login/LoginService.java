@@ -1,8 +1,8 @@
 package com.example.sample_back.service.login;
 
-import com.example.sample_back.controller.user.LoginRequest;
 import com.example.sample_back.repository.login.UserRecord;
 import com.example.sample_back.repository.login.UserRepository;
+import com.example.sampleback.model.RequestLogin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.exceptions.TooManyResultsException;
@@ -15,7 +15,7 @@ public class LoginService {
 
     private final UserRepository repository;
 
-    public UserEntity find(LoginRequest request) {
+    public UserEntity find(RequestLogin request) {
         try {
             boolean loginCheck = false;
             String userId = "";

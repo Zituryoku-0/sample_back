@@ -4,16 +4,14 @@ info:
   version: "0.0.1"
   description: "sample_backのドキュメント"
 paths:
-  # sampleパス
-  /sample:
-    get:
-      responses:
-        200:
-          description: "OK"
-
   # loginパス
   /login:
-    get:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/requestLogin'
       responses:
         200:
           content:
@@ -133,6 +131,23 @@ paths:
 
 components:
   schemas:
+    requestLogin:
+      required:
+        - userId
+        - password
+      type: object
+      properties:
+        userId:
+          type: string
+          minLength: 1
+          maxLength: 32
+          example: sampleUserId1
+        password:
+          type: string
+          format: password
+          minLength: 1
+          maxLength: 64
+          example: samplePassword1
     # ログイン成功
     successLogin:
       required:
@@ -148,12 +163,6 @@ components:
         loginCheck:
           type: boolean
           example: true
-        tags:
-          type: array
-          xml:
-            wrapped: true
-      xml:
-        name: login
     # ログイン失敗
     failureLogin:
       required:
@@ -169,12 +178,9 @@ components:
         loginCheck:
           type: boolean
           example: false
-        tags:
-          type: array
-          xml:
-            wrapped: true
-      xml:
-        name: login
+        message:
+          type: string
+          example: "ユーザーIDまたはパスワードが違います。"
 
     # 商品パス結果：成功
     successItem:
