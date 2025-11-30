@@ -37,7 +37,7 @@ public class LoginController implements LoginApi {
             successLogin.setLoginCheck(entity.getLoginCheck());
             return ResponseEntity.ok(successLogin);
         } catch (IllegalArgumentException illegalArgumentException) {
-           throw new IllegalArgumentException(illegalArgumentException);
+           throw illegalArgumentException;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
