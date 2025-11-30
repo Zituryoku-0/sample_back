@@ -11,14 +11,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                userId:
-                  type: string
-                  example: sampleUserId1
-                password:
-                  type: string
-                  example: samplePassword1
+                $ref: '#/components/schemas/requestLogin'
       responses:
         200:
           content:
@@ -138,6 +131,23 @@ paths:
 
 components:
   schemas:
+    requestLogin:
+      required:
+        - userId
+        - password
+      type: object
+      properties:
+        userId:
+          type: string
+          minLength: 1
+          maxLength: 32
+          example: sampleUserId1
+        password:
+          type: string
+          format: password
+          minLength: 1
+          maxLength: 64
+          example: samplePassword1
     # ログイン成功
     successLogin:
       required:
@@ -153,11 +163,6 @@ components:
         loginCheck:
           type: boolean
           example: true
-        tags:
-          xml:
-            wrapped: true
-      xml:
-        name: login
     # ログイン失敗
     failureLogin:
       required:
@@ -176,8 +181,6 @@ components:
         message:
           type: string
           example: "ユーザーIDまたはパスワードが違います。"
-      xml:
-        name: login
 
     # 商品パス結果：成功
     successItem:

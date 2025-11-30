@@ -262,4 +262,10 @@ gradle-app.setting
 # Java heap dump
 *.hprof
 
+### Copilot ###
+.idea/copilot.data.migration.agent.xml
+.idea/copilot.data.migration.ask.xml
+.idea/copilot.data.migration.ask2agent.xml
+.idea/copilot.data.migration.edit.xml
+
 # End of https://www.toptal.com/developers/gitignore/api/netbeans,java,intellij,visualstudiocode,eclipse,gradle
