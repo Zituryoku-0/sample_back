@@ -1,6 +1,5 @@
 package com.example.sample_back.service.login;
 
-import com.example.sample_back.controller.user.LoginRequest;
 import com.example.sample_back.repository.login.UserRecord;
 import com.example.sample_back.repository.login.UserRepository;
 import com.example.sampleback.model.LoginPostRequest;
