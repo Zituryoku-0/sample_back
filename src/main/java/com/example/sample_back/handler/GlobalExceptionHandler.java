@@ -36,7 +36,7 @@ public class GlobalExceptionHandler {
         failureLogin.setUserId("");
         failureLogin.setUserName("");
         failureLogin.setLoginCheck(false);
-        failureLogin.setMessage("内部サーバーエラーが発生しました。");
+        failureLogin.setMessage(ex.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(failureLogin);
     }
 }

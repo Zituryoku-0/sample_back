@@ -20,7 +20,7 @@ public class LoginService {
             boolean loginCheck = false;
             String userId = "";
             String userName = "";
-            UserRecord resSelect = repository.select(request.getUserId(), request.getPassword());
+            UserRecord resSelect = repository.selectUser(request.getUserId(), request.getPassword());
             if (resSelect != null) {
                 userId = resSelect.getUserId().trim();
                 userName = resSelect.getUserName().trim();
