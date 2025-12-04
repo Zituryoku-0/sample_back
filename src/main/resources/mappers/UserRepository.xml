@@ -6,10 +6,10 @@
 
     <select id="selectUser" resultType="com.example.sample_back.repository.login.UserRecord">
         SELECT
-        userid,
-        username
-        FROM userInfo
-        WHERE userid = #{userId}
+        userId,
+        userName
+        FROM userinfo
+        WHERE userId = #{userId}
         AND userPassword = #{password}
     </select>
 
