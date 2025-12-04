@@ -3,8 +3,6 @@ package com.example.sample_back.controller.user;
 import com.example.sample_back.service.login.LoginService;
 import com.example.sample_back.service.login.UserEntity;
 import com.example.sampleback.controller.LoginApi;
-import com.example.sampleback.model.LoginGetRequest;
-import com.example.sampleback.model.LoginPostRequest;
 import com.example.sampleback.model.RequestLogin;
 import com.example.sampleback.model.SuccessLogin;
 import lombok.RequiredArgsConstructor;
