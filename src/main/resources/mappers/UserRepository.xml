@@ -8,7 +8,7 @@
         SELECT
         userid,
         username
-        FROM userinfo
+        FROM userInfo
         WHERE userid = #{userId}
         AND userPassword = #{password}
     </select>
