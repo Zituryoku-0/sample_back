@@ -21,7 +21,7 @@ class UserRepositoryTest {
     @DisplayName("ユーザー情報取得のテスト")
     void testSelectUser() {
 
-        // Given:テストデータ（H2に投入）
+        // Given: テストデータは data.sql で自動投入済み
 
         // When
         RequestLogin requestLogin = new RequestLogin("sampleUserId1", "abcdef");
