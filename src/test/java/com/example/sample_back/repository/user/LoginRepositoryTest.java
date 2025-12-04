@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @MybatisTest
-class LoginRepositoryTest {
+class UserRepositoryTest {
 
     @Autowired
     UserRepository userRepository;
