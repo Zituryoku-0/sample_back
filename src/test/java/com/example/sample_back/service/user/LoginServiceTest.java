@@ -1,4 +1,3 @@
-// java
 package com.example.sample_back.service.user;
 
 import com.example.sample_back.repository.login.UserRecord;
