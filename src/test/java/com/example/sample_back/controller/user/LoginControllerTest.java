@@ -138,7 +138,7 @@ class LoginControllerTest {
         void loginFailure_withMultipleUsersFound() throws Exception {
             // Given
             when(loginService.find(any()))
-                    .thenThrow(new IllegalArgumentException("複数のユーザーが該当しました"));
+                    .thenThrow(new IllegalArgumentException("複数のユーザーが該当しました。"));
 
             Map<String, String> request = new HashMap<>();
             request.put("userId", "duplicateUser");
@@ -150,7 +150,7 @@ class LoginControllerTest {
                             .content(objectMapper.writeValueAsString(request)))
                     .andExpect(status().isBadRequest())
                     .andExpect(jsonPath("$.loginCheck").value(false))
-                    .andExpect(jsonPath("$.message").value("複数のユーザーが該当しました"));
+                    .andExpect(jsonPath("$.message").value("複数のユーザーが該当しました。"));
         }
 
         @Test
