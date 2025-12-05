@@ -1,0 +1,102 @@
+package com.example.sample_back.service.login;
+
+import com.example.sample_back.repository.login.UserRecord;
+import com.example.sample_back.repository.login.UserRepository;
+import com.example.sampleback.model.RequestLogin;
+import org.apache.ibatis.exceptions.TooManyResultsException;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+class LoginServiceTest {
+
+    @Mock
+    private UserRepository repository;
+
+    @Mock
+    private UserRecord userRecord;
+
+    @InjectMocks
+    private LoginService loginService;
+
+    @Test
+    void getFieldValue() {
+        RequestLogin request = new RequestLogin("  uid  ", " pass ");
+
+        when(repository.selectUser("  uid  ", " pass ")).thenReturn(userRecord);
+        when(userRecord.getUserId()).thenReturn(" uid ");
+        when(userRecord.getUserName()).thenReturn(" name ");
+
+        UserEntity result = loginService.find(request);
+
+        assertThat(result.getUserId()).isEqualTo("uid");
+        assertThat(result.getUserName()).isEqualTo("name");
+        assertThat(result.getLoginCheck()).isTrue();
+
+        verify(repository, times(1)).selectUser("  uid  ", " pass ");
+    }
+
+    @Test
+    @DisplayName("ユーザーが存在する場合、トリムされたUserEntityを返す")
+    void find_whenUserExists_returnsTrimmedUserEntity() {
+        RequestLogin request = new RequestLogin("  uid  ", " pass ");
+
+        when(repository.selectUser("  uid  ", " pass ")).thenReturn(userRecord);
+        when(userRecord.getUserId()).thenReturn(" uid ");
+        when(userRecord.getUserName()).thenReturn(" name ");
+
+        UserEntity result = loginService.find(request);
+
+        assertThat(result.getUserId()).isEqualTo("uid");
+        assertThat(result.getUserName()).isEqualTo("name");
+        assertThat(result.getLoginCheck()).isTrue();
+
+        verify(repository, times(1)).selectUser("  uid  ", " pass ");
+    }
+
+    @Test
+    @DisplayName("ユーザーが見つからない場合、空のUserEntityを返す")
+    void find_whenUserNotFound_returnsEmptyUserEntity() {
+        RequestLogin request = new RequestLogin("nope", "nopass");
+
+        when(repository.selectUser("nope", "nopass")).thenReturn(userRecord);
+
+        UserEntity result = loginService.find(request);
+
+        assertThat(result.getUserId().isEmpty()).isTrue();
+        assertThat(result.getUserName().isEmpty()).isTrue();
+        assertThat(result.getLoginCheck()).isFalse();
+
+        verify(repository, times(1)).selectUser("nope", "nopass");
+    }
+
+    @Test
+    @DisplayName("複数のユーザーが見つかった場合、IllegalArgumentExceptionをスローする")
+    void find_whenTooManyResults_throwsIllegalArgumentException() {
+        RequestLogin request = new RequestLogin("dup", "p");
+        when(repository.selectUser("dup", "p")).thenThrow(new TooManyResultsException("too many"));
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> loginService.find(request));
+        assertTrue(ex.getMessage().contains("複数のユーザー"));
+        verify(repository, times(1)).selectUser("dup", "p");
+    }
+
+    @Test
+    @DisplayName("予期しない例外が発生した場合、RuntimeExceptionをスローする")
+    void find_whenOtherException_throwsRuntimeException() {
+        RequestLogin request = new RequestLogin("err", "p");
+        when(repository.selectUser("err", "p")).thenThrow(new RuntimeException("db error"));
+
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> loginService.find(request));
+        assertTrue(ex.getMessage().contains("何かしらの例外"));
+        verify(repository, times(1)).selectUser("err", "p");
+    }
+}

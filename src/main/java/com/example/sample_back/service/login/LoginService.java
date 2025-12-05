@@ -1,5 +1,6 @@
 package com.example.sample_back.service.login;
 
+import ch.qos.logback.core.util.StringUtil;
 import com.example.sample_back.repository.login.UserRecord;
 import com.example.sample_back.repository.login.UserRepository;
 import com.example.sampleback.model.RequestLogin;
@@ -20,8 +21,8 @@ public class LoginService {
             boolean loginCheck = false;
             String userId = "";
             String userName = "";
-            UserRecord resSelect = repository.select(request.getUserId(), request.getPassword());
-            if (resSelect != null) {
+            UserRecord resSelect = repository.selectUser(request.getUserId(), request.getPassword());
+            if (!StringUtil.isNullOrEmpty(resSelect.getUserId()) && !StringUtil.isNullOrEmpty(resSelect.getUserName()) ) {
                 userId = resSelect.getUserId().trim();
                 userName = resSelect.getUserName().trim();
                 loginCheck = true;
@@ -30,7 +31,7 @@ public class LoginService {
         } catch (TooManyResultsException tooManyResultsException) {
             // ユーザーIDが複数件ヒットした場合は、例外を返す
             log.error("Too many results returned for userId = {}", request.getUserId(), tooManyResultsException);
-            throw new IllegalArgumentException("複数のユーザーが該当しました", tooManyResultsException);
+            throw new IllegalArgumentException("複数のユーザーが該当しました。", tooManyResultsException);
         } catch (Exception e) {
             log.error("An exception has occurred", e);
             throw new RuntimeException("何かしらの例外が発生しました。", e);
