@@ -129,8 +129,37 @@ paths:
                 $ref: '#/components/schemas/failureItemList'
           description: "Internal Server Error"
 
+  # ユーザー登録
+  /registUser:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/requestRegistUser'
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/suucessRegistUser'
+          description: "Successfully"
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/failureRegistUser'
+          description: "Client Error"
+        500:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/failureRegistUser'
+          description: "Internal Server Error"
+
 components:
   schemas:
+    #ログイン時のリクエスト
     requestLogin:
       required:
         - userId
@@ -352,3 +381,60 @@ components:
             example:
             xml:
               name: failureItemList
+    #ユーザー登録時のリクエスト
+    requestRegistUser:
+      required:
+        - userId
+        - userName
+        - password
+      type: object
+      properties:
+        userId:
+          type: string
+          minLength: 1
+          maxLength: 32
+          example: sampleUserId1
+        userName:
+          type: string
+          minLength: 1
+          maxLength: 64
+          example: sampleUserName1
+        password:
+          type: string
+          format: password
+          minLength: 1
+          maxLength: 64
+          example: samplePassword1
+    #ユーザー登録成功
+    suucessRegistUser:
+      required:
+        - userId
+        - userName
+        - password
+      type: object
+      properties:
+        userId:
+          type: string
+          minLength: 1
+          maxLength: 32
+          example: sampleUserId1
+        userName:
+          type: string
+          minLength: 1
+          maxLength: 64
+          example: sampleUserName1
+        password:
+          type: string
+          format: password
+          minLength: 1
+          maxLength: 64
+          example: samplePassword1
+    #ユーザー登録失敗
+    failureRegistUser:
+      required:
+        - message
+      type: object
+      properties:
+        message:
+          type: string
+          example: ユーザー登録に失敗しました。
