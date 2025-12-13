@@ -1,0 +1,53 @@
+package com.example.sample_back.service.registUser;
+
+import com.example.sample_back.exception.FailureRegistUserException;
+import com.example.sample_back.repository.registUser.RegistUserRepository;
+import com.example.sampleback.model.RequestRegistUser;
+import com.example.sampleback.model.ResponseSuccessRegistUser;
+import com.example.sampleback.model.SuccessRegistUser;
+import com.example.sampleback.model.SuccessResponseInfo;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class RegistUserService {
+
+    private final RegistUserRepository registUserRepository;
+
+
+    public SuccessRegistUser regist(RequestRegistUser requestRegistUser) {
+        try {
+            SuccessResponseInfo successResponseInfo =  new SuccessResponseInfo();
+            ResponseSuccessRegistUser responseSuccessRegistUser  = new ResponseSuccessRegistUser();
+            SuccessRegistUser successRegistUser = new SuccessRegistUser();
+            String userId;
+            String userName;
+            String message;
+            int result = registUserRepository.registUser(requestRegistUser.getUserId(), requestRegistUser.getUserName(), requestRegistUser.getPassword());
+            if (result != 1) {
+                throw new FailureRegistUserException("ユーザー登録に失敗しました。");
+            }
+            userId = requestRegistUser.getUserId();
+            userName = requestRegistUser.getUserName();
+            boolean loginCheck = true;
+            message = "ユーザー登録に成功しました。";
+            successResponseInfo.setCode("200");
+            successResponseInfo.setMessage("success");
+            responseSuccessRegistUser.setUserId(userId);
+            responseSuccessRegistUser.setUserName(userName);
+            responseSuccessRegistUser.setLoginCheck(loginCheck);
+            responseSuccessRegistUser.setMessage(message);
+
+            successRegistUser.setResponseInfo(successResponseInfo);
+            successRegistUser.setData(responseSuccessRegistUser);
+
+            // SuccessResponseInfoとresponseSuccessRegistUserを返す
+            return successRegistUser;
+        } catch (Exception e) {
+            throw new RuntimeException("サーバー内部でエラーが発生しました。", e);
+        }
+    }
+}

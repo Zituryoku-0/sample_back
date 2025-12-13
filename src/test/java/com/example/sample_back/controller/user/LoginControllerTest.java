@@ -169,7 +169,12 @@ class LoginControllerTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(request)))
                     .andExpect(status().isInternalServerError())
-                    .andExpect(jsonPath("$.loginCheck").value(false));
+                    .andExpect(jsonPath("$.responseInfo.code").value("500"))
+                    .andExpect(jsonPath("$.responseInfo.message").value("fail"))
+                    .andExpect(jsonPath("$.data.userId").value(""))
+                    .andExpect(jsonPath("$.data.userName").value(""))
+                    .andExpect(jsonPath("$.data.loginCheck").value(false))
+                    .andExpect(jsonPath("$.data.message").value("java.lang.RuntimeException: 何かしらの例外が発生しました。"));
         }
     }
 }

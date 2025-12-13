@@ -15,11 +15,3 @@
 
 </mapper>
 
-<mapper namespace="com.example.sample_back.repository.registUser.RegistUser">
-
-    <insert id="registUser">
-        INSERT INTO
-        userInfo (userId, userName, userPassword)
-        VALUES(#{userId}, #{userName}, "{password})
-    </insert>
-</mapper>

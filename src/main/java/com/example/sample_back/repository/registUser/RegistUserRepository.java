@@ -6,5 +6,5 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface RegistUserRepository {
 
-     int registUser(@Param("userid") String userId, @Param("username") String userName, @Param("password") String password);
+     int registUser(@Param("userId") String userId, @Param("userName") String userName, @Param("password") String password);
 }

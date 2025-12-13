@@ -142,23 +142,68 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/suucessRegistUser'
+                $ref: '#/components/schemas/successRegistUser'
           description: "Successfully"
         400:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/failureRegistUser'
+                $ref: '#/components/schemas/errorResponseInfo'
           description: "Client Error"
         500:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/failureRegistUser'
+                $ref: '#/components/schemas/errorResponseInfo'
           description: "Internal Server Error"
 
 components:
   schemas:
+    #ユーザー登録のレスポンス（成功）
+    successRegistUser:
+      allOf:
+        - type: object
+          properties:
+            responseInfo:
+              $ref: "#/components/schemas/successResponseInfo"
+            data:
+              $ref: "#/components/schemas/responseSuccessRegistUser"
+      nullable: true
+    #APIレスポンス（エラー）
+    errorResponse:
+      allOf:
+        - type: object
+          properties:
+            responseInfo:
+              $ref: "#/components/schemas/errorResponseInfo"
+            data:
+              $ref: "#/components/schemas/errorData"
+    #レスポンスステータスコード（200）
+    successResponseInfo:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          example: 200
+        message:
+          type: string
+          example: suucessfully
+    #レスポンスステータスコード（エラー）
+    errorResponseInfo:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          example: 500
+        message:
+          type: string
+          example: error
     #ログイン時のリクエスト
     requestLogin:
       required:
@@ -406,11 +451,12 @@ components:
           maxLength: 64
           example: samplePassword1
     #ユーザー登録成功
-    suucessRegistUser:
+    responseSuccessRegistUser:
       required:
         - userId
         - userName
-        - password
+        - loginCheck
+        - message
       type: object
       properties:
         userId:
@@ -423,18 +469,29 @@ components:
           minLength: 1
           maxLength: 64
           example: sampleUserName1
-        password:
-          type: string
-          format: password
-          minLength: 1
-          maxLength: 64
-          example: samplePassword1
-    #ユーザー登録失敗
-    failureRegistUser:
-      required:
-        - message
-      type: object
-      properties:
+        loginCheck:
+          type: boolean
+          example: true
         message:
           type: string
-          example: ユーザー登録に失敗しました。
+          example: ユーザー登録に成功しました。
+    #ユーザー登録失敗
+    errorData:
+      type: object
+      properties:
+        userId:
+          type: string
+          minLength: 1
+          maxLength: 32
+          example:
+        userName:
+          type: string
+          minLength: 1
+          maxLength: 64
+          example:
+        loginCheck:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: サンプルエラー。

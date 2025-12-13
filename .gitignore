@@ -79,6 +79,7 @@ local.properties
 .idea/**/shelf
 .idea/**/modules.xml
 .idea/modules/**
+.idea/**
 
 # AWS User-specific
 .idea/**/aws.xml
