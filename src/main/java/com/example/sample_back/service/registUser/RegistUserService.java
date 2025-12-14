@@ -20,8 +20,8 @@ public class RegistUserService {
 
     public SuccessRegistUser regist(RequestRegistUser requestRegistUser) {
         try {
-            SuccessResponseInfo successResponseInfo =  new SuccessResponseInfo();
-            ResponseSuccessRegistUser responseSuccessRegistUser  = new ResponseSuccessRegistUser();
+            SuccessResponseInfo successResponseInfo = new SuccessResponseInfo();
+            ResponseSuccessRegistUser responseSuccessRegistUser = new ResponseSuccessRegistUser();
             SuccessRegistUser successRegistUser = new SuccessRegistUser();
             int result = registUserRepository.registUser(requestRegistUser.getUserId(), requestRegistUser.getUserName(), requestRegistUser.getPassword());
             if (result != 1) {
@@ -31,7 +31,7 @@ public class RegistUserService {
             String userName = requestRegistUser.getUserName();
             boolean loginCheck = true;
             String message = "ユーザー登録に成功しました。";
-            successResponseInfo.setCode("200");
+            successResponseInfo.setCode("201");
             successResponseInfo.setMessage("success");
             responseSuccessRegistUser.setUserId(userId);
             responseSuccessRegistUser.setUserName(userName);
@@ -43,8 +43,10 @@ public class RegistUserService {
 
             // SuccessResponseInfoとresponseSuccessRegistUserを返す
             return successRegistUser;
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("ユーザーIDが重複しています。");
         } catch (Exception e) {
-            throw new RuntimeException("サーバー内部でエラーが発生しました。", e);
+            throw new RuntimeException("サーバー内部でエラーが発生しました。");
         }
     }
 }

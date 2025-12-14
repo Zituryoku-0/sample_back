@@ -25,14 +25,20 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<FailureLogin> handleIllegalArgumentException(IllegalArgumentException ex) {
-        FailureLogin failureLogin = new FailureLogin();
-        failureLogin.setUserId("");
-        failureLogin.setUserName("");
-        failureLogin.setLoginCheck(false);
-        failureLogin.setMessage("複数のユーザーが該当しました。");
-        log.error("Invalid argument error", ex);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(failureLogin);
+    public ResponseEntity<ErrorResponse> handleIllegalException(IllegalArgumentException ex) {
+        ErrorResponse errorResponse = new ErrorResponse();
+        ErrorResponseInfo erorrInfo = new ErrorResponseInfo();
+        erorrInfo.setCode("400");
+        erorrInfo.setMessage("fail");
+        ErrorData errorData = new ErrorData();
+        errorData.setUserId("");
+        errorData.setUserName("");
+        errorData.setLoginCheck(false);
+        errorData.setMessage(ex.getMessage());
+        errorResponse.setResponseInfo(erorrInfo);
+        errorResponse.setData(errorData);
+        log.error("Illegal argument error", ex);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
     @ExceptionHandler(FailureRegistUserException.class)

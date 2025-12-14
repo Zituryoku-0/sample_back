@@ -18,6 +18,8 @@ public class RegistUserRepositoryTest {
     @DisplayName("ユーザー登録に成功")
     void successRegistUser(){
 
+        // Given userInfoテーブルはschema.sqlで定義済
+
         // When
         RequestRegistUser requestRegistUser = new RequestRegistUser("successUserId", "successUserName", "successPassword");
         int resultRegistUser = registUserRepository.registUser(requestRegistUser.getUserId(), requestRegistUser.getUserName(), requestRegistUser.getPassword());
