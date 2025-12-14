@@ -2,7 +2,6 @@ package com.example.sample_back.handler;
 
 import com.example.sample_back.exception.FailureRegistUserException;
 import com.example.sampleback.model.*;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
