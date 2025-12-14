@@ -23,17 +23,14 @@ public class RegistUserService {
             SuccessResponseInfo successResponseInfo =  new SuccessResponseInfo();
             ResponseSuccessRegistUser responseSuccessRegistUser  = new ResponseSuccessRegistUser();
             SuccessRegistUser successRegistUser = new SuccessRegistUser();
-            String userId;
-            String userName;
-            String message;
             int result = registUserRepository.registUser(requestRegistUser.getUserId(), requestRegistUser.getUserName(), requestRegistUser.getPassword());
             if (result != 1) {
                 throw new FailureRegistUserException("ユーザー登録に失敗しました。");
             }
-            userId = requestRegistUser.getUserId();
-            userName = requestRegistUser.getUserName();
+            String userId = requestRegistUser.getUserId();
+            String userName = requestRegistUser.getUserName();
             boolean loginCheck = true;
-            message = "ユーザー登録に成功しました。";
+            String message = "ユーザー登録に成功しました。";
             successResponseInfo.setCode("200");
             successResponseInfo.setMessage("success");
             responseSuccessRegistUser.setUserId(userId);
