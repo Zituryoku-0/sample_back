@@ -53,7 +53,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ErrorResponse> handleFailureRegistUserGeneralException(Exception ex) {
+    public ResponseEntity<ErrorResponse> handleRuntimeException(RuntimeException ex) {
         ErrorResponse errorResponse = new ErrorResponse();
         ErrorResponseInfo erorrInfo = new ErrorResponseInfo();
         erorrInfo.setCode("500");
