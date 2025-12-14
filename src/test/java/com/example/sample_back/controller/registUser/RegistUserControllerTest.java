@@ -42,7 +42,7 @@ public class RegistUserControllerTest {
     class TestSuccessRegistUser {
 
         @Test
-        void suucessRegistUser() throws Exception {
+        void successRegistUser() throws Exception {
             // Given
             SuccessResponseInfo responseInfo = new SuccessResponseInfo("200", "success");
             ResponseSuccessRegistUser data = new ResponseSuccessRegistUser("successUserId", "successUserName", true,"ユーザー登録に成功しました。");
