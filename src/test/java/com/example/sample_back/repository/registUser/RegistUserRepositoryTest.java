@@ -1,6 +1,5 @@
 package com.example.sample_back.repository.registUser;
 
-import com.example.sample_back.repository.login.UserRepository;
 import com.example.sampleback.model.RequestRegistUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
