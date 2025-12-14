@@ -190,7 +190,7 @@ components:
           example: 200
         message:
           type: string
-          example: suucessfully
+          example: successfully
     #レスポンスステータスコード（エラー）
     errorResponseInfo:
       type: object
