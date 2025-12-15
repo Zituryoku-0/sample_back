@@ -280,7 +280,7 @@ public class RegistUserControllerTest {
         void testUserIdMaxLength() throws Exception {
             // Given
             SuccessResponseInfo responseInfo = new SuccessResponseInfo("201", "success");
-            ResponseSuccessRegistUser data = new ResponseSuccessRegistUser("a".repeat(32), "validUserName", true,"ユーザー登録に成功しました。");
+            ResponseSuccessRegistUser data = new ResponseSuccessRegistUser("a".repeat(32), "validUserName", true, "ユーザー登録に成功しました。");
             SuccessRegistUser successRegistUser = new SuccessRegistUser();
             successRegistUser.setResponseInfo(responseInfo);
             successRegistUser.setData(data);
@@ -305,7 +305,7 @@ public class RegistUserControllerTest {
         void testUserIdMinLength() throws Exception {
             // Given
             SuccessResponseInfo responseInfo = new SuccessResponseInfo("201", "success");
-            ResponseSuccessRegistUser data = new ResponseSuccessRegistUser("a", "validUserName", true,"ユーザー登録に成功しました。");
+            ResponseSuccessRegistUser data = new ResponseSuccessRegistUser("a", "validUserName", true, "ユーザー登録に成功しました。");
             SuccessRegistUser successRegistUser = new SuccessRegistUser();
             successRegistUser.setResponseInfo(responseInfo);
             successRegistUser.setData(data);
