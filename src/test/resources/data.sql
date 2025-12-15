@@ -1,1 +1,2 @@
 INSERT INTO userInfo (userId, userName, userPassword) VALUES('sampleUserId1', 'sample UserName1', 'abcdef');
+INSERT INTO userInfo (userId, userName, userPassword) VALUES('ExistsByUserId1', 'ExistsByUserName1', 'ExistsByPassword');

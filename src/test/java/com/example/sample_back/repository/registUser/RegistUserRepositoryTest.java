@@ -5,8 +5,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 @MybatisTest
 public class RegistUserRepositoryTest {
@@ -16,7 +18,7 @@ public class RegistUserRepositoryTest {
 
     @Test
     @DisplayName("ユーザー登録に成功")
-    void successRegistUser(){
+    void successRegistUser() {
 
         // Given userInfoテーブルはschema.sqlで定義済
 
@@ -28,4 +30,15 @@ public class RegistUserRepositoryTest {
         assertThat(resultRegistUser).isEqualTo(1);
     }
 
+    @Test
+    @DisplayName("ユーザーIDが重複時")
+    void failRegistExistsByUser() {
+        // Given userInfoテーブル、データはschema.sql、data.sqlで定義済
+
+        // When/Then
+        RequestRegistUser requestRegistUser = new RequestRegistUser("ExistsByUserId1", "ExistsByUserName1", "ExistsByPassword");
+        assertThatThrownBy(() -> registUserRepository.registUser(requestRegistUser.getUserId(),
+                requestRegistUser.getUserName(), requestRegistUser.getPassword()))
+                .isInstanceOf(DuplicateKeyException.class);
+    }
 }

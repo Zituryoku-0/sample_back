@@ -6,12 +6,14 @@ import com.example.sampleback.model.RequestRegistUser;
 import com.example.sampleback.model.ResponseSuccessRegistUser;
 import com.example.sampleback.model.SuccessRegistUser;
 import com.example.sampleback.model.SuccessResponseInfo;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class RegistUserService {
 
@@ -19,10 +21,14 @@ public class RegistUserService {
 
 
     public SuccessRegistUser regist(RequestRegistUser requestRegistUser) {
+        SuccessResponseInfo successResponseInfo = new SuccessResponseInfo();
+        ResponseSuccessRegistUser responseSuccessRegistUser = new ResponseSuccessRegistUser();
+        SuccessRegistUser successRegistUser = new SuccessRegistUser();
         try {
-            SuccessResponseInfo successResponseInfo = new SuccessResponseInfo();
-            ResponseSuccessRegistUser responseSuccessRegistUser = new ResponseSuccessRegistUser();
-            SuccessRegistUser successRegistUser = new SuccessRegistUser();
+            // 登録しようとするユーザーIDが既に存在する場合
+            if(registUserRepository.isRegistedUser(requestRegistUser.getUserId()) > 0){
+                throw new FailureRegistUserException("このユーザーIDは既に使用されています。");
+            }
             int result = registUserRepository.registUser(requestRegistUser.getUserId(), requestRegistUser.getUserName(), requestRegistUser.getPassword());
             if (result != 1) {
                 throw new FailureRegistUserException("ユーザー登録に失敗しました。");

@@ -7,4 +7,6 @@ import org.apache.ibatis.annotations.Param;
 public interface RegistUserRepository {
 
      int registUser(@Param("userId") String userId, @Param("userName") String userName, @Param("password") String password);
+
+     int isRegistedUser(@Param("userId") String userId);
 }

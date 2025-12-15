@@ -27,7 +27,6 @@ public class RegistUserController implements RegistUserApi {
      */
     @Override
     public ResponseEntity<SuccessRegistUser> registUserPost(RequestRegistUser requestRegistUser) {
-
         SuccessRegistUser entity = service.regist(requestRegistUser);
         return ResponseEntity.ok(entity);
     }

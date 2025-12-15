@@ -90,6 +90,7 @@ public class RegistUserControllerTest {
             mockMvc.perform(post("/registUser")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(request)))
+                    .andExpect(status().isInternalServerError())
                     .andExpect(jsonPath("$.responseInfo.code").value("500"))
                     .andExpect(jsonPath("$.responseInfo.message").value("fail"))
                     .andExpect(jsonPath("$.data.userId").value(""))
@@ -103,7 +104,7 @@ public class RegistUserControllerTest {
         void failRegistUserId() throws Exception {
             // Given
             RequestRegistUser requestRegistUser = new RequestRegistUser("failureUserId", "failureUserName", "failurePassword");
-            when(registUserService.regist(requestRegistUser)).thenThrow(new IllegalArgumentException("ユーザーIDが重複しています。"));
+            when(registUserService.regist(requestRegistUser)).thenThrow(new IllegalArgumentException("このユーザーIDは既に使用されています。"));
 
             Map<String, String> request = new HashMap<>();
             request.put("userId", "failureUserId");
@@ -114,12 +115,13 @@ public class RegistUserControllerTest {
             mockMvc.perform(post("/registUser")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(request)))
+                    .andExpect(status().isBadRequest())
                     .andExpect(jsonPath("$.responseInfo.code").value("400"))
                     .andExpect(jsonPath("$.responseInfo.message").value("fail"))
                     .andExpect(jsonPath("$.data.userId").value(""))
                     .andExpect(jsonPath("$.data.userName").value(""))
                     .andExpect(jsonPath("$.data.loginCheck").value(false))
-                    .andExpect(jsonPath("$.data.message").value("ユーザーIDが重複しています。"));
+                    .andExpect(jsonPath("$.data.message").value("このユーザーIDは既に使用されています。"));
         }
 
         @Test
@@ -138,6 +140,7 @@ public class RegistUserControllerTest {
             mockMvc.perform(post("/registUser")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(request)))
+                    .andExpect(status().isInternalServerError())
                     .andExpect(jsonPath("$.responseInfo.code").value("500"))
                     .andExpect(jsonPath("$.responseInfo.message").value("fail"))
                     .andExpect(jsonPath("$.data.userId").value(""))
