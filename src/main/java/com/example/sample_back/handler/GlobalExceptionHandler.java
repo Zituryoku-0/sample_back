@@ -14,14 +14,28 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<FailureLogin> handleValidationException(MethodArgumentNotValidException ex) {
-        FailureLogin failureLogin = new FailureLogin();
-        failureLogin.setUserId("");
-        failureLogin.setUserName("");
-        failureLogin.setLoginCheck(false);
-        failureLogin.setMessage("入力値が不正です。");
-        log.error("Invalid argument error", ex);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(failureLogin);
+    public ResponseEntity<ErrorResponse> handleValidationException(MethodArgumentNotValidException ex) {
+        ErrorResponse errorResponse = new ErrorResponse();
+        ErrorResponseInfo errorInfo = new ErrorResponseInfo();
+        errorInfo.setCode("400");
+        errorInfo.setMessage("fail");
+        
+        ErrorData errorData = new ErrorData();
+        errorData.setUserId("");
+        errorData.setUserName("");
+        errorData.setLoginCheck(false);
+        
+        // バリデーションエラーメッセージを構築
+        StringBuilder messageBuilder = new StringBuilder("入力値が不正です。");
+        ex.getBindingResult().getFieldErrors().forEach(error -> {
+            messageBuilder.append(" ").append(error.getField()).append(": ").append(error.getDefaultMessage()).append("。");
+        });
+        errorData.setMessage(messageBuilder.toString());
+        
+        errorResponse.setResponseInfo(errorInfo);
+        errorResponse.setData(errorData);
+        log.error("Validation error", ex);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)

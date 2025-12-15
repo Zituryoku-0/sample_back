@@ -146,4 +146,183 @@ public class RegistUserControllerTest {
                     .andExpect(jsonPath("$.data.message").value("サーバー内部でエラーが発生しました。"));
         }
     }
+
+    @Nested
+    @DisplayName("バリデーションエラー")
+    class ValidationErrorTests {
+
+        @Test
+        @DisplayName("userIdが空文字の場合")
+        void testEmptyUserId() throws Exception {
+            // Given
+            Map<String, String> request = new HashMap<>();
+            request.put("userId", "");
+            request.put("userName", "validUserName");
+            request.put("password", "validPassword");
+
+            // When & Then
+            mockMvc.perform(post("/registUser")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request)))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.responseInfo.code").value("400"))
+                    .andExpect(jsonPath("$.responseInfo.message").value("fail"));
+        }
+
+        @Test
+        @DisplayName("userIdが長すぎる場合（33文字）")
+        void testUserIdTooLong() throws Exception {
+            // Given
+            Map<String, String> request = new HashMap<>();
+            request.put("userId", "a".repeat(33)); // 33文字
+            request.put("userName", "validUserName");
+            request.put("password", "validPassword");
+
+            // When & Then
+            mockMvc.perform(post("/registUser")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request)))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.responseInfo.code").value("400"))
+                    .andExpect(jsonPath("$.responseInfo.message").value("fail"));
+        }
+
+        @Test
+        @DisplayName("userNameが空文字の場合")
+        void testEmptyUserName() throws Exception {
+            // Given
+            Map<String, String> request = new HashMap<>();
+            request.put("userId", "validUserId");
+            request.put("userName", "");
+            request.put("password", "validPassword");
+
+            // When & Then
+            mockMvc.perform(post("/registUser")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request)))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.responseInfo.code").value("400"))
+                    .andExpect(jsonPath("$.responseInfo.message").value("fail"));
+        }
+
+        @Test
+        @DisplayName("userNameが長すぎる場合（65文字）")
+        void testUserNameTooLong() throws Exception {
+            // Given
+            Map<String, String> request = new HashMap<>();
+            request.put("userId", "validUserId");
+            request.put("userName", "a".repeat(65)); // 65文字
+            request.put("password", "validPassword");
+
+            // When & Then
+            mockMvc.perform(post("/registUser")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request)))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.responseInfo.code").value("400"))
+                    .andExpect(jsonPath("$.responseInfo.message").value("fail"));
+        }
+
+        @Test
+        @DisplayName("passwordが空文字の場合")
+        void testEmptyPassword() throws Exception {
+            // Given
+            Map<String, String> request = new HashMap<>();
+            request.put("userId", "validUserId");
+            request.put("userName", "validUserName");
+            request.put("password", "");
+
+            // When & Then
+            mockMvc.perform(post("/registUser")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request)))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.responseInfo.code").value("400"))
+                    .andExpect(jsonPath("$.responseInfo.message").value("fail"));
+        }
+
+        @Test
+        @DisplayName("passwordが長すぎる場合（65文字）")
+        void testPasswordTooLong() throws Exception {
+            // Given
+            Map<String, String> request = new HashMap<>();
+            request.put("userId", "validUserId");
+            request.put("userName", "validUserName");
+            request.put("password", "a".repeat(65)); // 65文字
+
+            // When & Then
+            mockMvc.perform(post("/registUser")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request)))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.responseInfo.code").value("400"))
+                    .andExpect(jsonPath("$.responseInfo.message").value("fail"));
+        }
+
+        @Test
+        @DisplayName("必須フィールドがnullの場合")
+        void testNullFields() throws Exception {
+            // Given
+            Map<String, String> request = new HashMap<>();
+            // すべてのフィールドをnullにする（リクエストに含めない）
+
+            // When & Then
+            mockMvc.perform(post("/registUser")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request)))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.responseInfo.code").value("400"))
+                    .andExpect(jsonPath("$.responseInfo.message").value("fail"));
+        }
+
+        @Test
+        @DisplayName("境界値テスト：userIdが32文字（最大値）")
+        void testUserIdMaxLength() throws Exception {
+            // Given
+            SuccessResponseInfo responseInfo = new SuccessResponseInfo("201", "success");
+            ResponseSuccessRegistUser data = new ResponseSuccessRegistUser("a".repeat(32), "validUserName", true,"ユーザー登録に成功しました。");
+            SuccessRegistUser successRegistUser = new SuccessRegistUser();
+            successRegistUser.setResponseInfo(responseInfo);
+            successRegistUser.setData(data);
+            RequestRegistUser requestRegistUser = new RequestRegistUser("a".repeat(32), "validUserName", "validPassword");
+            when(registUserService.regist(requestRegistUser)).thenReturn(successRegistUser);
+
+            Map<String, String> request = new HashMap<>();
+            request.put("userId", "a".repeat(32)); // 32文字（最大）
+            request.put("userName", "validUserName");
+            request.put("password", "validPassword");
+
+            // When & Then
+            mockMvc.perform(post("/registUser")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request)))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.responseInfo.code").value("201"));
+        }
+
+        @Test
+        @DisplayName("境界値テスト：userIdが1文字（最小値）")
+        void testUserIdMinLength() throws Exception {
+            // Given
+            SuccessResponseInfo responseInfo = new SuccessResponseInfo("201", "success");
+            ResponseSuccessRegistUser data = new ResponseSuccessRegistUser("a", "validUserName", true,"ユーザー登録に成功しました。");
+            SuccessRegistUser successRegistUser = new SuccessRegistUser();
+            successRegistUser.setResponseInfo(responseInfo);
+            successRegistUser.setData(data);
+            RequestRegistUser requestRegistUser = new RequestRegistUser("a", "validUserName", "validPassword");
+            when(registUserService.regist(requestRegistUser)).thenReturn(successRegistUser);
+
+            Map<String, String> request = new HashMap<>();
+            request.put("userId", "a"); // 1文字（最小）
+            request.put("userName", "validUserName");
+            request.put("password", "validPassword");
+
+            // When & Then
+            mockMvc.perform(post("/registUser")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request)))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.responseInfo.code").value("201"));
+        }
+    }
 }
