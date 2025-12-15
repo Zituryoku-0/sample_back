@@ -96,7 +96,7 @@ class LoginServiceTest {
         when(repository.selectUser("err", "p")).thenThrow(new RuntimeException("db error"));
 
         RuntimeException ex = assertThrows(RuntimeException.class, () -> loginService.find(request));
-        assertTrue(ex.getMessage().contains("何かしらの例外"));
+        assertTrue(ex.getMessage().contains("サーバー内部でエラーが発生しました。"));
         verify(repository, times(1)).selectUser("err", "p");
     }
 }

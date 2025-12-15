@@ -31,10 +31,10 @@ public class LoginService {
         } catch (TooManyResultsException tooManyResultsException) {
             // ユーザーIDが複数件ヒットした場合は、例外を返す
             log.error("Too many results returned for userId = {}", request.getUserId(), tooManyResultsException);
-            throw new IllegalArgumentException("複数のユーザーが該当しました。", tooManyResultsException);
+            throw new IllegalArgumentException("複数のユーザーが該当しました。");
         } catch (Exception e) {
             log.error("An exception has occurred", e);
-            throw new RuntimeException("何かしらの例外が発生しました。", e);
+            throw new RuntimeException("サーバー内部でエラーが発生しました。");
         }
     }
 }

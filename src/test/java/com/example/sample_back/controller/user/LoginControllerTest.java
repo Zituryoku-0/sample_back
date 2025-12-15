@@ -148,9 +148,12 @@ class LoginControllerTest {
             mockMvc.perform(post("/login")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(request)))
-                    .andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$.loginCheck").value(false))
-                    .andExpect(jsonPath("$.message").value("複数のユーザーが該当しました。"));
+                    .andExpect(jsonPath("$.responseInfo.code").value("400"))
+                    .andExpect(jsonPath("$.responseInfo.message").value("fail"))
+                    .andExpect(jsonPath("$.data.userId").value(""))
+                    .andExpect(jsonPath("$.data.userName").value(""))
+                    .andExpect(jsonPath("$.data.loginCheck").value(false))
+                    .andExpect(jsonPath("$.data.message").value("複数のユーザーが該当しました。"));
         }
 
         @Test
@@ -158,7 +161,7 @@ class LoginControllerTest {
         void loginFailure_withUnexpectedException() throws Exception {
             // Given
             when(loginService.find(any()))
-                    .thenThrow(new RuntimeException("何かしらの例外が発生しました。"));
+                    .thenThrow(new RuntimeException("サーバー内部でエラーが発生しました。"));
 
             Map<String, String> request = new HashMap<>();
             request.put("userId", "testUser");
@@ -169,7 +172,12 @@ class LoginControllerTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(request)))
                     .andExpect(status().isInternalServerError())
-                    .andExpect(jsonPath("$.loginCheck").value(false));
+                    .andExpect(jsonPath("$.responseInfo.code").value("500"))
+                    .andExpect(jsonPath("$.responseInfo.message").value("fail"))
+                    .andExpect(jsonPath("$.data.userId").value(""))
+                    .andExpect(jsonPath("$.data.userName").value(""))
+                    .andExpect(jsonPath("$.data.loginCheck").value(false))
+                    .andExpect(jsonPath("$.data.message").value("サーバー内部でエラーが発生しました。"));
         }
     }
 }
