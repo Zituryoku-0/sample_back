@@ -260,11 +260,11 @@ public class RegistUserControllerTest {
         }
 
         @Test
-        @DisplayName("必須フィールドがnullの場合")
-        void testNullFields() throws Exception {
+        @DisplayName("必須フィールドが欠落している場合")
+        void testMissingFields() throws Exception {
             // Given
             Map<String, String> request = new HashMap<>();
-            // すべてのフィールドをnullにする（リクエストに含めない）
+            // すべてのフィールドを含めない（リクエストボディに欠落）
 
             // When & Then
             mockMvc.perform(post("/registUser")
