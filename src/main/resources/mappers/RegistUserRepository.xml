@@ -8,10 +8,7 @@
         INSERT INTO userInfo (userid, username, userpassword) VALUES(#{userId}, #{userName}, #{password})
     </insert>
 
-    <select id="isRegistedUser" resultType="com.example.sample_back.repository.registUser.RegistUserRepository">
-        SELECT
-        count(*)
-        FROM userinfo
-        WHERE userId = #{userId}
+    <select id="isRegistedUser" resultType="int">
+        SELECT COUNT(*) FROM userinfo WHERE userid = #{userId}
     </select>
 </mapper>

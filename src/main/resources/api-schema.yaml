@@ -17,19 +17,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/successLogin'
+                $ref: '#/components/schemas/successLoginUser'
           description: "Successfully"
         400:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/failureLogin'
+                $ref: '#/components/schemas/errorResponse'
           description: "Client Error"
         500:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/failureLogin'
+                $ref: '#/components/schemas/errorResponse'
           description: "Internal Server Error"
 
   # itemパス
@@ -148,18 +148,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponseInfo'
+                $ref: '#/components/schemas/errorResponse'
           description: "Client Error"
         500:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponseInfo'
+                $ref: '#/components/schemas/errorResponse'
           description: "Internal Server Error"
 
 components:
   schemas:
-    #ユーザー登録のレスポンス（成功）
+    #ユーザー登録成功のレスポンスフォーマット
     successRegistUser:
       allOf:
         - type: object
@@ -169,7 +169,8 @@ components:
             data:
               $ref: "#/components/schemas/responseSuccessRegistUser"
       nullable: true
-    #APIレスポンス（エラー）
+    #APIレスポンスフォーマット（エラー）
+    #すべてのエンドポイントの共通レスポンスフォーマット
     errorResponse:
       allOf:
         - type: object
@@ -178,6 +179,18 @@ components:
               $ref: "#/components/schemas/errorResponseInfo"
             data:
               $ref: "#/components/schemas/errorData"
+
+    #ログイン成功のレスポンスフォーマット
+    successLoginUser:
+      allOf:
+        - type: object
+          properties:
+            responseInfo:
+              $ref: "#/components/schemas/successResponseInfo"
+            data:
+              $ref: "#/components/schemas/successLogin"
+      nullable: true
+
     #レスポンスステータスコード（200）
     successResponseInfo:
       type: object
@@ -222,7 +235,7 @@ components:
           minLength: 1
           maxLength: 64
           example: samplePassword1
-    # ログイン成功
+    # ログイン成功時のレスポンスデータ
     successLogin:
       required:
         - id
@@ -237,6 +250,9 @@ components:
         loginCheck:
           type: boolean
           example: true
+        message:
+          type: string
+          example: "ログインに成功しました。"
     # ログイン失敗
     failureLogin:
       required:

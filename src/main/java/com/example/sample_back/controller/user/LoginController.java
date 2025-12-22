@@ -5,6 +5,7 @@ import com.example.sample_back.service.login.UserEntity;
 import com.example.sampleback.controller.LoginApi;
 import com.example.sampleback.model.RequestLogin;
 import com.example.sampleback.model.SuccessLogin;
+import com.example.sampleback.model.SuccessLoginUser;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.ResponseEntity;
@@ -25,12 +26,11 @@ public class LoginController implements LoginApi {
      * or Internal Server Error (status code 500)
      */
     @Override
-    public ResponseEntity<SuccessLogin> loginPost(RequestLogin requestLogin) {
-        UserEntity entity = service.find(requestLogin);
-        SuccessLogin successLogin = new SuccessLogin();
-        successLogin.setUserId(entity.getUserId());
-        successLogin.setUserName(entity.getUserName());
-        successLogin.setLoginCheck(entity.getLoginCheck());
-        return ResponseEntity.ok(successLogin);
+    public ResponseEntity<SuccessLoginUser> loginPost(RequestLogin requestLogin) {
+        SuccessLoginUser entity = service.find(requestLogin);
+        return ResponseEntity.ok(entity);
     }
+
+
+
 }

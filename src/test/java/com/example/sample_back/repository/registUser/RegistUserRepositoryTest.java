@@ -41,4 +41,18 @@ public class RegistUserRepositoryTest {
                 requestRegistUser.getUserName(), requestRegistUser.getPassword()))
                 .isInstanceOf(DuplicateKeyException.class);
     }
+
+    @Test
+    @DisplayName("ユーザー確認チェック")
+    void isRegistedUser() {
+        // Given userInfoテーブル、データはschema.sql、data.sqlで定義済
+
+        // When
+        Integer existUserId = registUserRepository.isRegistedUser("ExistsByUserId1");
+        Integer notExistUserId = registUserRepository.isRegistedUser("NotExistsByUserId");
+
+        // Then
+        assertThat(existUserId).isEqualTo(1);
+        assertThat(notExistUserId).isEqualTo(0);
+    }
 }
