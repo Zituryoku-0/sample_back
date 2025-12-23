@@ -30,6 +30,4 @@ public class LoginController implements LoginApi {
         return ResponseEntity.ok(response);
     }
 
-
-
 }
