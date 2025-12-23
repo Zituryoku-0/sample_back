@@ -26,8 +26,8 @@ public class LoginController implements LoginApi {
      */
     @Override
     public ResponseEntity<SuccessLoginUser> loginPost(RequestLogin requestLogin) {
-        SuccessLoginUser entity = service.find(requestLogin);
-        return ResponseEntity.ok(entity);
+        SuccessLoginUser response = service.find(requestLogin);
+        return ResponseEntity.ok(response);
     }
 
 
