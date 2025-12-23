@@ -1,7 +1,6 @@
 package com.example.sample_back.controller.user;
 
 import com.example.sample_back.service.login.LoginService;
-import com.example.sample_back.service.login.UserEntity;
 import com.example.sampleback.model.SuccessLogin;
 import com.example.sampleback.model.SuccessLoginUser;
 import com.example.sampleback.model.SuccessResponseInfo;
