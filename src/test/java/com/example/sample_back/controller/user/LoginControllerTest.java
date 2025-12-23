@@ -1,7 +1,9 @@
 package com.example.sample_back.controller.user;
 
 import com.example.sample_back.service.login.LoginService;
-import com.example.sample_back.service.login.UserEntity;
+import com.example.sampleback.model.SuccessLogin;
+import com.example.sampleback.model.SuccessLoginUser;
+import com.example.sampleback.model.SuccessResponseInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -41,11 +43,21 @@ class LoginControllerTest {
         @DisplayName("正しいuserIdとpasswordでログイン成功（200 OK）")
         void loginSuccess_withValidCredentials() throws Exception {
             // Given
-            UserEntity userEntity = new UserEntity("testUser", "テストユーザー", true);
-            when(loginService.find(any())).thenReturn(userEntity);
+            SuccessLoginUser successLoginUser = new SuccessLoginUser();
+            SuccessResponseInfo successResponseInfo = new SuccessResponseInfo();
+            SuccessLogin successLogin = new SuccessLogin();
+            successResponseInfo.setCode("200");
+            successResponseInfo.setMessage("success");
+            successLogin.setUserId("successUserId");
+            successLogin.setUserName("テストユーザー");
+            successLogin.setLoginCheck(true);
+            successLogin.setMessage("ログインに成功しました。");
+            successLoginUser.setResponseInfo(successResponseInfo);
+            successLoginUser.setData(successLogin);
+            when(loginService.find(any())).thenReturn(successLoginUser);
 
             Map<String, String> request = new HashMap<>();
-            request.put("userId", "testUser");
+            request.put("userId", "successUserId");
             request.put("password", "testPassword");
 
             // When & Then
@@ -53,9 +65,12 @@ class LoginControllerTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(request)))
                     .andExpect(status().isOk())
-                    .andExpect(jsonPath("$.userId").value("testUser"))
-                    .andExpect(jsonPath("$.userName").value("テストユーザー"))
-                    .andExpect(jsonPath("$.loginCheck").value(true));
+                    .andExpect(jsonPath("$.responseInfo.code").value("200"))
+                    .andExpect(jsonPath("$.responseInfo.message").value("success"))
+                    .andExpect(jsonPath("$.data.userId").value("successUserId"))
+                    .andExpect(jsonPath("$.data.userName").value("テストユーザー"))
+                    .andExpect(jsonPath("$.data.loginCheck").value(true))
+                    .andExpect(jsonPath("$.data.message").value("ログインに成功しました。"));
         }
     }
 
@@ -66,9 +81,20 @@ class LoginControllerTest {
         @Test
         @DisplayName("存在しないユーザーでのログイン失敗")
         void loginFailure_withNonExistentUser() throws Exception {
+
             // Given
-            UserEntity userEntity = new UserEntity("", "", false);
-            when(loginService.find(any())).thenReturn(userEntity);
+            SuccessLoginUser successLoginUser = new SuccessLoginUser();
+            SuccessResponseInfo successResponseInfo = new SuccessResponseInfo();
+            SuccessLogin successLogin = new SuccessLogin();
+            successResponseInfo.setCode("200");
+            successResponseInfo.setMessage("success");
+            successLogin.setUserId("");
+            successLogin.setUserName("");
+            successLogin.setLoginCheck(false);
+            successLogin.setMessage("ログインに失敗しました。ユーザーIDまたはパスワードが正しくありません。");
+            successLoginUser.setResponseInfo(successResponseInfo);
+            successLoginUser.setData(successLogin);
+            when(loginService.find(any())).thenReturn(successLoginUser);
 
             Map<String, String> request = new HashMap<>();
             request.put("userId", "nonExistentUser");
@@ -79,30 +105,13 @@ class LoginControllerTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(request)))
                     .andExpect(status().isOk())
-                    .andExpect(jsonPath("$.userId").value(""))
-                    .andExpect(jsonPath("$.userName").value(""))
-                    .andExpect(jsonPath("$.loginCheck").value(false));
-        }
-
-        @Test
-        @DisplayName("パスワード誤りでのログイン失敗")
-        void loginFailure_withWrongPassword() throws Exception {
-            // Given
-            UserEntity userEntity = new UserEntity("", "", false);
-            when(loginService.find(any())).thenReturn(userEntity);
-
-            Map<String, String> request = new HashMap<>();
-            request.put("userId", "testUser");
-            request.put("password", "wrongPassword");
-
-            // When & Then
-            mockMvc.perform(post("/login")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(request)))
-                    .andExpect(status().isOk())
-                    .andExpect(jsonPath("$.userId").value(""))
-                    .andExpect(jsonPath("$.userName").value(""))
-                    .andExpect(jsonPath("$.loginCheck").value(false));
+                    .andExpect(jsonPath("$.responseInfo.code").value("200"))
+                    .andExpect(jsonPath("$.responseInfo.message").value("success"))
+                    .andExpect(jsonPath("$.data.userId").value(""))
+                    .andExpect(jsonPath("$.data.userName").value(""))
+                    .andExpect(jsonPath("$.data.loginCheck").value(false))
+                    .andExpect(jsonPath("$.data.message")
+                            .value("ログインに失敗しました。ユーザーIDまたはパスワードが正しくありません。"));
         }
 
         @Test

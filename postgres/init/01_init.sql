@@ -12,4 +12,4 @@ CREATE TABLE userInfo (
 	latest_access_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 -- サンプルデータの登録
-INSERT INTO userInfo (userId, userName, userPassword) VALUES('sampleUserId1', 'sample UserName1', 'abcdef');
+INSERT INTO userInfo (userId, userName, userPassword) VALUES('sampleUserId1', 'sample UserName1', 'abcdefgh');

@@ -1,9 +1,14 @@
 package com.example.sample_back.service.login;
 
 import ch.qos.logback.core.util.StringUtil;
+import com.example.sample_back.exception.FailureRegistUserException;
+import com.example.sample_back.exception.UnauthorizedException;
 import com.example.sample_back.repository.login.UserRecord;
 import com.example.sample_back.repository.login.UserRepository;
 import com.example.sampleback.model.RequestLogin;
+import com.example.sampleback.model.SuccessLogin;
+import com.example.sampleback.model.SuccessLoginUser;
+import com.example.sampleback.model.SuccessResponseInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.exceptions.TooManyResultsException;
@@ -16,7 +21,13 @@ public class LoginService {
 
     private final UserRepository repository;
 
-    public UserEntity find(RequestLogin request) {
+    public SuccessLoginUser find(RequestLogin request) {
+        // レスポンスフォーマット
+        SuccessLoginUser successLoginUser = new SuccessLoginUser();
+        // レスポンスのresponseInfo部分
+        SuccessResponseInfo successResponseInfo = new SuccessResponseInfo();
+        // レスポンスのdata部分
+        SuccessLogin successLogin = new SuccessLogin();
         try {
             boolean loginCheck = false;
             String userId = "";
@@ -26,12 +37,27 @@ public class LoginService {
                 userId = resSelect.getUserId().trim();
                 userName = resSelect.getUserName().trim();
                 loginCheck = true;
+            } else {
+                log.error("Unauthorized for userId = {}", request.getUserId());
+                throw new UnauthorizedException("ログインに失敗しました。ユーザーIDまたはパスワードが正しくありません。。");
             }
-            return new UserEntity(userId, userName, loginCheck);
+            String message = "ログインに成功しました。";
+            successResponseInfo.setCode("200");
+            successResponseInfo.setMessage("success");
+            successLogin.setUserId(userId);
+            successLogin.setUserName(userName);
+            successLogin.setLoginCheck(loginCheck);
+            successLogin.setMessage(message);
+
+            successLoginUser.setResponseInfo(successResponseInfo);
+            successLoginUser.setData(successLogin);
+            return successLoginUser;
         } catch (TooManyResultsException tooManyResultsException) {
             // ユーザーIDが複数件ヒットした場合は、例外を返す
             log.error("Too many results returned for userId = {}", request.getUserId(), tooManyResultsException);
             throw new IllegalArgumentException("複数のユーザーが該当しました。");
+        } catch (UnauthorizedException unauthorizedException) {
+            throw unauthorizedException;
         } catch (Exception e) {
             log.error("An exception has occurred", e);
             throw new RuntimeException("サーバー内部でエラーが発生しました。");
