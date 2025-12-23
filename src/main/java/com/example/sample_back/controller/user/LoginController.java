@@ -4,7 +4,6 @@ import com.example.sample_back.service.login.LoginService;
 import com.example.sample_back.service.login.UserEntity;
 import com.example.sampleback.controller.LoginApi;
 import com.example.sampleback.model.RequestLogin;
-import com.example.sampleback.model.SuccessLogin;
 import com.example.sampleback.model.SuccessLoginUser;
 import lombok.RequiredArgsConstructor;
 
