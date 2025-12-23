@@ -150,6 +150,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/errorResponse'
           description: "Client Error"
+        401:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: "Unauthorized"
         500:
           content:
             application/json:
@@ -232,13 +238,13 @@ components:
         password:
           type: string
           format: password
-          minLength: 1
+          minLength: 8
           maxLength: 64
           example: samplePassword1
     # ログイン成功時のレスポンスデータ
     successLogin:
       required:
-        - id
+        - userId
       type: object
       properties:
         userId:

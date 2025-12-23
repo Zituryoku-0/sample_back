@@ -1,5 +1,6 @@
 package com.example.sample_back.service.login;
 
+import com.example.sample_back.exception.UnauthorizedException;
 import com.example.sample_back.repository.login.UserRecord;
 import com.example.sample_back.repository.login.UserRepository;
 import com.example.sampleback.model.RequestLogin;
@@ -52,25 +53,15 @@ class LoginServiceTest {
     }
 
     @Test
-    @DisplayName("ユーザーが見つからない場合、空のUserEntityを返す")
+    @DisplayName("ユーザー不正の場合、401ステータスコードと空のUserEntityを返す")
     void find_whenUserNotFound_returnsEmptyUserEntity() {
         RequestLogin request = new RequestLogin("nope", "nopass");
 
-        when(repository.selectUser("nope", "nopass")).thenReturn(userRecord);
-        when(userRecord.getUserId()).thenReturn("");
+        when(repository.selectUser("nope", "nopass"))
+                .thenThrow(new UnauthorizedException("ログインに失敗しました。ユーザーIDまたはパスワードが正しくありません。"));
 
-        SuccessLoginUser result = loginService.find(request);
-
-        assertNotNull(result.getResponseInfo());
-        assertNotNull(result.getData());
-        assertThat(result.getResponseInfo().getCode()).isEqualTo("200");
-        assertThat(result.getResponseInfo().getMessage()).isEqualTo("success");
-        assertNotNull(result.getData().getUserId());
-        assertThat(result.getData().getUserId().isEmpty()).isTrue();
-        assertNotNull(result.getData().getUserName());
-        assertThat(result.getData().getUserName().isEmpty()).isTrue();
-        assertThat(result.getData().getLoginCheck()).isFalse();
-        assertThat(result.getData().getMessage()).isEqualTo("ログインに失敗しました。ユーザーIDまたはパスワードが正しくありません。");
+        UnauthorizedException ex = assertThrows(UnauthorizedException.class, () -> loginService.find(request));
+        assertThat(ex.getMessage()).contains("ログインに失敗しました。ユーザーIDまたはパスワードが正しくありません。");
 
         verify(repository, times(1)).selectUser("nope", "nopass");
     }

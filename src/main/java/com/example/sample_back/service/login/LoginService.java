@@ -1,6 +1,8 @@
 package com.example.sample_back.service.login;
 
 import ch.qos.logback.core.util.StringUtil;
+import com.example.sample_back.exception.FailureRegistUserException;
+import com.example.sample_back.exception.UnauthorizedException;
 import com.example.sample_back.repository.login.UserRecord;
 import com.example.sample_back.repository.login.UserRepository;
 import com.example.sampleback.model.RequestLogin;
@@ -35,8 +37,11 @@ public class LoginService {
                 userId = resSelect.getUserId().trim();
                 userName = resSelect.getUserName().trim();
                 loginCheck = true;
+            } else {
+                log.error("Unauthorized for userId = {}", request.getUserId());
+                throw new UnauthorizedException("ログインに失敗しました。ユーザーIDまたはパスワードが正しくありません。。");
             }
-            String message = loginCheck ? "ログインに成功しました。" : "ログインに失敗しました。ユーザーIDまたはパスワードが正しくありません。";
+            String message = "ログインに成功しました。";
             successResponseInfo.setCode("200");
             successResponseInfo.setMessage("success");
             successLogin.setUserId(userId);
@@ -51,6 +56,8 @@ public class LoginService {
             // ユーザーIDが複数件ヒットした場合は、例外を返す
             log.error("Too many results returned for userId = {}", request.getUserId(), tooManyResultsException);
             throw new IllegalArgumentException("複数のユーザーが該当しました。");
+        } catch (UnauthorizedException unauthorizedException) {
+            throw unauthorizedException;
         } catch (Exception e) {
             log.error("An exception has occurred", e);
             throw new RuntimeException("サーバー内部でエラーが発生しました。");
