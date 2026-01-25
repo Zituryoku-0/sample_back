@@ -31,6 +31,18 @@ class UserRepositoryTest {
     }
 
     @Test
+    @DisplayName("削除フラグが立っているユーザーの場合、nullを返す")
+    void testSelectUser_deletedUser(){
+        RequestLogin requestLogin = new RequestLogin("NotLoginUserId", "NotLoginUserPassword");
+        UserRecord userRecord = userRepository.selectUser(
+                requestLogin.getUserId(),
+                requestLogin.getPassword()
+        );
+
+        assertThat(userRecord).isNull();
+    }
+
+    @Test
     @DisplayName("存在しないユーザーIDの場合、nullを返す")
     void testSelectUser_notFound(){
         RequestLogin requestLogin = new RequestLogin("nonExistentUser", "password");
