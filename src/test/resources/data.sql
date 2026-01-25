@@ -3,4 +3,4 @@ INSERT INTO userInfo (userId, userName, userPassword) VALUES('ExistsByUserId1', 
 INSERT INTO userInfo (userId, userName, userPassword) VALUES('NotLoginUserId', 'NotLoginUserName', 'NotLoginUserPassword');
 
 -- NotLoginUserの削除フラグを立てる
-UPDATE userInfo SET delete_flg = '1' WHERE userId = 'NotLoginUserId';
+UPDATE userInfo SET delete_flg = TRUE WHERE userId = 'NotLoginUserId';

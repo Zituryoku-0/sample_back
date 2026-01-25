@@ -9,11 +9,14 @@ CREATE TABLE userInfo (
 	userName char(64) NOT NULL,
 	userPassword char(64) NOT NULL,
 	latest_access_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	delete_flg char(1) NOT NULL DEFAULT '0'
+	delete_flg boolean NOT NULL DEFAULT FALSE,
     PRIMARY KEY (userId)
 );
 -- サンプルデータの登録
 INSERT INTO userInfo (userId, userName, userPassword) VALUES('sampleUserId1', 'sample UserName1', 'abcdefgh');
 INSERT INTO userInfo (userId, userName, userPassword) VALUES('sampleUserId2', 'sample UserName2', 'abcdefgh');
+INSERT INTO userInfo (userId, userName, userPassword) VALUES('NotLoginUserId', 'NotLoginUserName', 'abcdefgh');
 
 UPDATE userInfo SET latest_access_time = '2000-01-01 12:00:00' WHERE userId = 'sampleUserId2';
+-- NotLoginUserの削除フラグを立てる
+UPDATE userInfo SET delete_flg = TRUE WHERE userId = 'NotLoginUserId';

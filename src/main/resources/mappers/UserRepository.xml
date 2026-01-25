@@ -11,7 +11,7 @@
         FROM userinfo
         WHERE userId = #{userId}
         AND userPassword = #{password}
-        AND delete_flg = '0'
+        AND delete_flg IS NOT TRUE
     </select>
 
 </mapper>
