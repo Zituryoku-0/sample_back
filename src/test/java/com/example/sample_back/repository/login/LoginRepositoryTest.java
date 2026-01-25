@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.jdbc.Sql;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -28,6 +29,18 @@ class UserRepositoryTest {
         // Then
         assertThat(userRecord.getUserId().trim()).isEqualTo("sampleUserId1");
         assertThat(userRecord.getUserName().trim()).isEqualTo("sample UserName1");
+    }
+
+    @Test
+    @DisplayName("削除フラグが立っているユーザーの場合、nullを返す")
+    void testSelectUser_deletedUser(){
+        RequestLogin requestLogin = new RequestLogin("NotLoginUserId", "NotLoginUserPassword");
+        UserRecord userRecord = userRepository.selectUser(
+                requestLogin.getUserId(),
+                requestLogin.getPassword()
+        );
+
+        assertThat(userRecord).isNull();
     }
 
     @Test
