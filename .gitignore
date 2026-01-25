@@ -80,6 +80,7 @@ local.properties
 .idea/**/modules.xml
 .idea/modules/**
 .idea/**
+.idea/modules.xml
 
 # AWS User-specific
 .idea/**/aws.xml
