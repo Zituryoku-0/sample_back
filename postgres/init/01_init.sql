@@ -9,7 +9,7 @@ CREATE TABLE userInfo (
 	userName char(64) NOT NULL,
 	userPassword char(64) NOT NULL,
 	latest_access_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    delete_flg char(1) NOT NULL DEFAULT '0'
+	delete_flg char(1) NOT NULL DEFAULT '0'
 );
 -- サンプルデータの登録
 INSERT INTO userInfo (userId, userName, userPassword) VALUES('sampleUserId1', 'sample UserName1', 'abcdefgh');
