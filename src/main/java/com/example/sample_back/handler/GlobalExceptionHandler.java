@@ -15,28 +15,42 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<FailureLogin> handleValidationException(MethodArgumentNotValidException ex) {
-        FailureLogin failureLogin = new FailureLogin();
-        failureLogin.setUserId("");
-        failureLogin.setUserName("");
-        failureLogin.setLoginCheck(false);
-        failureLogin.setMessage("入力値が不正です。");
-        log.error("Invalid argument error", ex);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(failureLogin);
+    public ResponseEntity<ErrorResponse> handleValidationException(MethodArgumentNotValidException ex) {
+        ErrorResponse errorResponse = new ErrorResponse();
+        ErrorResponseInfo errorInfo = new ErrorResponseInfo();
+        errorInfo.setCode("400");
+        errorInfo.setMessage("fail");
+        
+        ErrorData errorData = new ErrorData();
+        errorData.setUserId("");
+        errorData.setUserName("");
+        errorData.setLoginCheck(false);
+        
+        // バリデーションエラーメッセージを構築
+        StringBuilder messageBuilder = new StringBuilder("入力値が不正です。");
+        ex.getBindingResult().getFieldErrors().forEach(error -> {
+            messageBuilder.append(" ").append(error.getField()).append(": ").append(error.getDefaultMessage()).append("。");
+        });
+        errorData.setMessage(messageBuilder.toString());
+        
+        errorResponse.setResponseInfo(errorInfo);
+        errorResponse.setData(errorData);
+        log.error("Validation error", ex);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handleIllegalException(IllegalArgumentException ex) {
         ErrorResponse errorResponse = new ErrorResponse();
-        ErrorResponseInfo erorrInfo = new ErrorResponseInfo();
-        erorrInfo.setCode("400");
-        erorrInfo.setMessage("fail");
+        ErrorResponseInfo errorInfo = new ErrorResponseInfo();
+        errorInfo.setCode("400");
+        errorInfo.setMessage("fail");
         ErrorData errorData = new ErrorData();
         errorData.setUserId("");
         errorData.setUserName("");
         errorData.setLoginCheck(false);
         errorData.setMessage(ex.getMessage());
-        errorResponse.setResponseInfo(erorrInfo);
+        errorResponse.setResponseInfo(errorInfo);
         errorResponse.setData(errorData);
         log.error("Illegal argument error", ex);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
@@ -62,15 +76,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(FailureRegistUserException.class)
     public ResponseEntity<ErrorResponse> handleFailureRegistUserException(FailureRegistUserException ex) {
         ErrorResponse errorResponse = new ErrorResponse();
-        ErrorResponseInfo erorrInfo = new ErrorResponseInfo();
-        erorrInfo.setCode("500");
-        erorrInfo.setMessage("fail");
+        ErrorResponseInfo errorInfo = new ErrorResponseInfo();
+        errorInfo.setCode("500");
+        errorInfo.setMessage("fail");
         ErrorData errorData = new ErrorData();
         errorData.setUserId("");
         errorData.setUserName("");
         errorData.setLoginCheck(false);
         errorData.setMessage(ex.getMessage());
-        errorResponse.setResponseInfo(erorrInfo);
+        errorResponse.setResponseInfo(errorInfo);
         errorResponse.setData(errorData);
         log.error("failure regist user error", ex);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
@@ -79,15 +93,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ErrorResponse> handleRuntimeException(RuntimeException ex) {
         ErrorResponse errorResponse = new ErrorResponse();
-        ErrorResponseInfo erorrInfo = new ErrorResponseInfo();
-        erorrInfo.setCode("500");
-        erorrInfo.setMessage("fail");
+        ErrorResponseInfo errorInfo = new ErrorResponseInfo();
+        errorInfo.setCode("500");
+        errorInfo.setMessage("fail");
         ErrorData errorData = new ErrorData();
         errorData.setUserId("");
         errorData.setUserName("");
         errorData.setLoginCheck(false);
         errorData.setMessage(ex.getMessage());
-        errorResponse.setResponseInfo(erorrInfo);
+        errorResponse.setResponseInfo(errorInfo);
         errorResponse.setData(errorData);
         log.error("Internal server error", ex);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
