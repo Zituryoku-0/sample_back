@@ -1,14 +1,13 @@
 package com.example.sample_back.service.login;
 
 import ch.qos.logback.core.util.StringUtil;
-import com.example.sample_back.exception.FailureRegistUserException;
+import com.example.sample.generated.model.RequestLogin;
+import com.example.sample.generated.model.SuccessLogin;
+import com.example.sample.generated.model.SuccessLoginUser;
+import com.example.sample.generated.model.SuccessResponseInfo;
 import com.example.sample_back.exception.UnauthorizedException;
 import com.example.sample_back.repository.login.UserRecord;
 import com.example.sample_back.repository.login.UserRepository;
-import com.example.sampleback.model.RequestLogin;
-import com.example.sampleback.model.SuccessLogin;
-import com.example.sampleback.model.SuccessLoginUser;
-import com.example.sampleback.model.SuccessResponseInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.exceptions.TooManyResultsException;
@@ -29,14 +28,12 @@ public class LoginService {
         // レスポンスのdata部分
         SuccessLogin successLogin = new SuccessLogin();
         try {
-            boolean loginCheck = false;
-            String userId = "";
-            String userName = "";
+            String userId;
+            String userName;
             UserRecord resSelect = repository.selectUser(request.getUserId(), request.getPassword());
             if (!StringUtil.isNullOrEmpty(resSelect.getUserId()) && !StringUtil.isNullOrEmpty(resSelect.getUserName()) ) {
                 userId = resSelect.getUserId().trim();
                 userName = resSelect.getUserName().trim();
-                loginCheck = true;
             } else {
                 log.error("Unauthorized for userId = {}", request.getUserId());
                 throw new UnauthorizedException("ログインに失敗しました。ユーザーIDまたはパスワードが正しくありません。。");
@@ -46,7 +43,7 @@ public class LoginService {
             successResponseInfo.setMessage("success");
             successLogin.setUserId(userId);
             successLogin.setUserName(userName);
-            successLogin.setLoginCheck(loginCheck);
+            successLogin.setLoginCheck(true);
             successLogin.setMessage(message);
 
             successLoginUser.setResponseInfo(successResponseInfo);

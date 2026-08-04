@@ -1,10 +1,10 @@
 package com.example.sample_back.service.login;
 
+import com.example.sample.generated.model.RequestLogin;
+import com.example.sample.generated.model.SuccessLoginUser;
 import com.example.sample_back.exception.UnauthorizedException;
 import com.example.sample_back.repository.login.UserRecord;
 import com.example.sample_back.repository.login.UserRepository;
-import com.example.sampleback.model.RequestLogin;
-import com.example.sampleback.model.SuccessLoginUser;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

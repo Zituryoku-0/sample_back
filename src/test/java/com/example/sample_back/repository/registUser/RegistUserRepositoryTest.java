@@ -1,6 +1,6 @@
 package com.example.sample_back.repository.registUser;
 
-import com.example.sampleback.model.RequestRegistUser;
+import com.example.sample.generated.model.RequestRegistUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
