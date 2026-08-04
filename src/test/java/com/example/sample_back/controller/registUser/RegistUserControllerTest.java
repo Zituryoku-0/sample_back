@@ -1,11 +1,11 @@
 package com.example.sample_back.controller.registUser;
 
+import com.example.sample.generated.model.RequestRegistUser;
+import com.example.sample.generated.model.ResponseSuccessRegistUser;
+import com.example.sample.generated.model.SuccessRegistUser;
+import com.example.sample.generated.model.SuccessResponseInfo;
 import com.example.sample_back.exception.FailureRegistUserException;
 import com.example.sample_back.service.registUser.RegistUserService;
-import com.example.sampleback.model.RequestRegistUser;
-import com.example.sampleback.model.ResponseSuccessRegistUser;
-import com.example.sampleback.model.SuccessRegistUser;
-import com.example.sampleback.model.SuccessResponseInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

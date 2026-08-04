@@ -1,9 +1,9 @@
 package com.example.sample_back.controller.user;
 
+import com.example.sample.generated.model.SuccessLogin;
+import com.example.sample.generated.model.SuccessLoginUser;
+import com.example.sample.generated.model.SuccessResponseInfo;
 import com.example.sample_back.service.login.LoginService;
-import com.example.sampleback.model.SuccessLogin;
-import com.example.sampleback.model.SuccessLoginUser;
-import com.example.sampleback.model.SuccessResponseInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

@@ -1,8 +1,10 @@
 package com.example.sample_back.handler;
 
+import com.example.sample.generated.model.ErrorData;
+import com.example.sample.generated.model.ErrorResponse;
+import com.example.sample.generated.model.ErrorResponseInfo;
 import com.example.sample_back.exception.FailureRegistUserException;
 import com.example.sample_back.exception.UnauthorizedException;
-import com.example.sampleback.model.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,17 +15,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<FailureLogin> handleValidationException(MethodArgumentNotValidException ex) {
-        FailureLogin failureLogin = new FailureLogin();
-        failureLogin.setUserId("");
-        failureLogin.setUserName("");
-        failureLogin.setLoginCheck(false);
-        failureLogin.setMessage("入力値が不正です。");
-        log.error("Invalid argument error", ex);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(failureLogin);
-    }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handleIllegalException(IllegalArgumentException ex) {

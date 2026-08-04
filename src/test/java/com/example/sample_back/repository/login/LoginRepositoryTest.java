@@ -1,6 +1,6 @@
 package com.example.sample_back.repository.login;
 
-import com.example.sampleback.model.RequestLogin;
+import com.example.sample.generated.model.RequestLogin;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;

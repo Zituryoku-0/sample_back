@@ -1,0 +1,233 @@
+openapi: 3.0.3
+info:
+  title: sample_back Document
+  version: 0.0.1
+  description: sample_backのドキュメント
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+paths:
+  /login:
+    post:
+      tags:
+        - login
+      operationId: loginUser
+      description: ユーザーログイン
+      summary: ユーザーログイン
+      security: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/requestLogin'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successLoginUser'
+          description: Successfully
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Client Error
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Internal Server Error
+  /registUser:
+    post:
+      tags:
+        - registUser
+      operationId: registUser
+      description: ユーザー登録
+      summary: ユーザー登録
+      security: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/requestRegistUser'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successRegistUser'
+          description: Successfully
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Client Error
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Unauthorized
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Internal Server Error
+components:
+  schemas:
+    successResponseInfo:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          example: '200'
+        message:
+          type: string
+          example: successfully
+    errorResponseInfo:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          example: '500'
+        message:
+          type: string
+          example: error
+    successRegistUser:
+      type: object
+      nullable: true
+      allOf:
+        - type: object
+          properties:
+            responseInfo:
+              $ref: '#/components/schemas/successResponseInfo'
+            data:
+              $ref: '#/components/schemas/responseSuccessRegistUser'
+    errorResponse:
+      allOf:
+        - type: object
+          properties:
+            responseInfo:
+              $ref: '#/components/schemas/errorResponseInfo'
+            data:
+              $ref: '#/components/schemas/errorData'
+    successLoginUser:
+      type: object
+      nullable: true
+      allOf:
+        - type: object
+          properties:
+            responseInfo:
+              $ref: '#/components/schemas/successResponseInfo'
+            data:
+              $ref: '#/components/schemas/successLogin'
+    requestLogin:
+      required:
+        - userId
+        - password
+      type: object
+      properties:
+        userId:
+          type: string
+          minLength: 1
+          maxLength: 32
+          example: sampleUserId1
+        password:
+          type: string
+          format: password
+          minLength: 8
+          maxLength: 64
+          example: samplePassword1
+    successLogin:
+      required:
+        - userId
+      type: object
+      properties:
+        userId:
+          type: string
+          example: sampleUserId1
+        userName:
+          type: string
+          example: sample UserName1
+        loginCheck:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: ログインに成功しました。
+    requestRegistUser:
+      required:
+        - userId
+        - userName
+        - password
+      type: object
+      properties:
+        userId:
+          type: string
+          minLength: 1
+          maxLength: 32
+          example: sampleUserId1
+        userName:
+          type: string
+          minLength: 1
+          maxLength: 64
+          example: sampleUserName1
+        password:
+          type: string
+          format: password
+          minLength: 1
+          maxLength: 64
+          example: samplePassword1
+    responseSuccessRegistUser:
+      required:
+        - userId
+        - userName
+        - loginCheck
+        - message
+      type: object
+      properties:
+        userId:
+          type: string
+          minLength: 1
+          maxLength: 32
+          example: sampleUserId1
+        userName:
+          type: string
+          minLength: 1
+          maxLength: 64
+          example: sampleUserName1
+        loginCheck:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: ユーザー登録に成功しました。
+    errorData:
+      type: object
+      properties:
+        userId:
+          type: string
+          minLength: 1
+          maxLength: 32
+          example: sampleUserId1
+        userName:
+          type: string
+          minLength: 1
+          maxLength: 64
+          example: sampleUserName1
+        loginCheck:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: サンプルエラー。
